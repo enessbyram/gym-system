@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ProductCard from "./ProductCard";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 // Resimleri buraya import ediyoruz
 import bccaImg from "../assets/product-images/bcca.jpg";
@@ -65,12 +66,15 @@ const Products = () => {
       </div>
 
       <div className="w-full mt-16 flex justify-center items-center">
-        <button className="bg-[#009ee1] cursor-pointer text-white px-6 py-3 rounded-lg hover:bg-[#007bbd] transition duration-300 shadow-[0_0_20px_rgba(0,158,225,0.7)] hover:shadow-[0_0_30px_rgba(0,158,225,0.9)] flex items-center text-lg">
+        <Link 
+          to="/products" 
+          className="bg-[#009ee1] cursor-pointer text-white px-6 py-3 rounded-lg hover:bg-[#007bbd] transition duration-300 shadow-[0_0_20px_rgba(0,158,225,0.7)] hover:shadow-[0_0_30px_rgba(0,158,225,0.9)] flex items-center text-lg"
+        >
           <span className="drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)] flex items-center">
             Tüm Ürünleri Görüntüle
             <FontAwesomeIcon icon={faArrowRight} className="ml-2" />
           </span>
-        </button>
+        </Link>
       </div>
     </div>
   );
