@@ -5,6 +5,8 @@ import './index.css'
 import App from './pages/App'
 import Products from './pages/Products'
 import Packages from './pages/Packages'
+import Contact from './pages/Contact'
+import Login from './pages/Login'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -18,6 +20,8 @@ createRoot(document.getElementById('root')).render(
         
         <Route path="/products" element={<Products isPage={true} />} />
         <Route path="/packages" element={<Packages isPage={true} />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

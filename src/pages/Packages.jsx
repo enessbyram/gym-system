@@ -1,7 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { faBagShopping, faCheck, faDumbbell } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBagShopping,
+  faCheck,
+  faDumbbell,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Packages = () => {
   return (
@@ -32,7 +36,7 @@ const Packages = () => {
                   className="text-[#009ee1] text-2xl rotate-135"
                 />
               </div>
-              <h3 className="text-[#009ee1] text-3xl font-semibold">5000₺</h3>
+              <h3 className="text-[#009ee1] text-3xl font-semibold">5.000₺</h3>
             </div>
             <h1 className="text-white text-2xl font-semibold mx-6">
               1 Ay Spor Salonu
@@ -47,7 +51,7 @@ const Packages = () => {
             </p>
             <p className="text-[#5b5b5b] text-md mx-6 mb-4">
               <FontAwesomeIcon icon={faCheck} className="text-[#009ee1] mr-2" />
-                Sınırsız Kullanım
+              Sınırsız Kullanım
             </p>
           </div>
           <div className="container w-100 h-auto my-4 rounded-2xl hover:border-[#009ee1] transition-all hover:scale-102 border border-[#353434] bg-[#222121] flex flex-col">
@@ -58,7 +62,7 @@ const Packages = () => {
                   className="text-[#009ee1] text-2xl rotate-135"
                 />
               </div>
-              <h3 className="text-[#009ee1] text-3xl font-semibold">10000₺</h3>
+              <h3 className="text-[#009ee1] text-3xl font-semibold">10.000₺</h3>
             </div>
             <h1 className="text-white text-2xl font-semibold mx-6">
               3 Ay Spor Salonu
@@ -73,7 +77,7 @@ const Packages = () => {
             </p>
             <p className="text-[#5b5b5b] text-md mx-6 mb-4">
               <FontAwesomeIcon icon={faCheck} className="text-[#009ee1] mr-2" />
-                Sınırsız Kullanım
+              Sınırsız Kullanım
             </p>
           </div>
         </div>
@@ -95,7 +99,7 @@ const Packages = () => {
                   className="text-[#24c15d] text-2xl"
                 />
               </div>
-              <h3 className="text-[#24c15d] text-3xl font-semibold">9000₺</h3>
+              <h3 className="text-[#24c15d] text-3xl font-semibold">9.000₺</h3>
             </div>
             <h1 className="text-white text-2xl font-semibold mx-6">
               10 PT Dersi
@@ -110,7 +114,7 @@ const Packages = () => {
             </p>
             <p className="text-[#5b5b5b] text-md mx-6 mb-4">
               <FontAwesomeIcon icon={faCheck} className="text-[#24c15d] mr-2" />
-                Kişiselleştirilmiş Program
+              Kişiselleştirilmiş Program
             </p>
           </div>
           <div className="container w-100 h-auto my-4 rounded-2xl hover:border-[#24c15d] transition-all hover:scale-102 border border-[#353434] bg-[#222121] flex flex-col">
@@ -121,7 +125,7 @@ const Packages = () => {
                   className="text-[#24c15d] text-2xl"
                 />
               </div>
-              <h3 className="text-[#24c15d] text-3xl font-semibold">17000₺</h3>
+              <h3 className="text-[#24c15d] text-3xl font-semibold">17.000₺</h3>
             </div>
             <h1 className="text-white text-2xl font-semibold mx-6">
               20 PT Dersi
@@ -136,7 +140,7 @@ const Packages = () => {
             </p>
             <p className="text-[#5b5b5b] text-md mx-6 mb-4">
               <FontAwesomeIcon icon={faCheck} className="text-[#24c15d] mr-2" />
-                Kişiselleştirilmiş Program
+              Kişiselleştirilmiş Program
             </p>
           </div>
           <div className="container w-100 h-auto my-4 rounded-2xl hover:border-[#24c15d] transition-all hover:scale-102 border border-[#353434] bg-[#222121] flex flex-col">
@@ -147,7 +151,7 @@ const Packages = () => {
                   className="text-[#24c15d] text-2xl"
                 />
               </div>
-              <h3 className="text-[#24c15d] text-3xl font-semibold">10000₺</h3>
+              <h3 className="text-[#24c15d] text-3xl font-semibold">24.000₺</h3>
             </div>
             <h1 className="text-white text-2xl font-semibold mx-6">
               30 PT Dersi
@@ -162,42 +166,67 @@ const Packages = () => {
             </p>
             <p className="text-[#5b5b5b] text-md mx-6 mb-4">
               <FontAwesomeIcon icon={faCheck} className="text-[#24c15d] mr-2" />
-                Kişiselleştirilmiş Program
+              Kişiselleştirilmiş Program
             </p>
           </div>
         </div>
-        <div className="bg-[#222121] mr-10 border border-[#353434] min-h-80 my-4 px-10 py-10 rounded-2xl w-309 flex flex-col items-start justify-start">
-            <h2 className="text-white text-3xl font-semibold mt-6">Paket Seçerken Bilmeniz Gerekeler</h2>
+        <div className="container">
+          <div className="bg-[#222121] border border-[#353434] min-h-80 my-4 px-10 py-10 rounded-2xl w-full flex flex-col items-start justify-start">
+            <h2 className="text-white text-3xl font-semibold mt-6">
+              Paket Seçerken Bilmeniz Gerekeler
+            </h2>
             <div className="container flex w-full flex-row">
-                <div className="flex flex-col w-1/4">
-                    <div className="w-16 h-16 bg-[#243a47] rounded-xl flex items-center justify-center mt-6">
-                        <FontAwesomeIcon icon={faCheck} className="text-[#009ee1] text-3xl" />
-                    </div>
-                    <h1 className="text-white text-xl my-4">Esnek Kullanım</h1>
-                    <p className="text-md text-[#565555]">Spor salonu üyelikleri seçilen süre boyunca geçerlidir.</p>
+              <div className="flex flex-col w-1/4">
+                <div className="w-16 h-16 bg-[#243a47] rounded-xl flex items-center justify-center mt-6">
+                  <FontAwesomeIcon
+                    icon={faCheck}
+                    className="text-[#009ee1] text-3xl"
+                  />
                 </div>
-                <div className="flex flex-col w-1/4">
-                    <div className="w-16 h-16 bg-[#28412e] rounded-xl flex items-center justify-center mt-6">
-                        <FontAwesomeIcon icon={faCheck} className="text-[#24c15d] text-3xl" />
-                    </div>
-                    <h1 className="text-white text-xl my-4">PT Dersleri</h1>
-                    <p className="text-md text-[#565555]">PT Dersleri belirtilen süre içinde kullanılmalıdır.</p>
+                <h1 className="text-white text-xl my-4">Esnek Kullanım</h1>
+                <p className="text-md text-[#565555]">
+                  Spor salonu üyelikleri seçilen süre boyunca geçerlidir.
+                </p>
+              </div>
+              <div className="flex flex-col w-1/4">
+                <div className="w-16 h-16 bg-[#28412e] rounded-xl flex items-center justify-center mt-6">
+                  <FontAwesomeIcon
+                    icon={faCheck}
+                    className="text-[#24c15d] text-3xl"
+                  />
                 </div>
-                <div className="flex flex-col w-1/4">
-                    <div className="w-16 h-16 bg-[#243a47] rounded-xl flex items-center justify-center mt-6">
-                        <FontAwesomeIcon icon={faCheck} className="text-[#009ee1] text-3xl" />
-                    </div>
-                    <h1 className="text-white text-xl my-4">Randevu Sistemi</h1>
-                    <p className="text-md text-[#565555]">Tüm paketler randevu sistemimiz üzerinden aktif edilir.</p>
+                <h1 className="text-white text-xl my-4">PT Dersleri</h1>
+                <p className="text-md text-[#565555]">
+                  PT Dersleri belirtilen süre içinde kullanılmalıdır.
+                </p>
+              </div>
+              <div className="flex flex-col w-1/4">
+                <div className="w-16 h-16 bg-[#243a47] rounded-xl flex items-center justify-center mt-6">
+                  <FontAwesomeIcon
+                    icon={faCheck}
+                    className="text-[#009ee1] text-3xl"
+                  />
                 </div>
-                <div className="flex flex-col w-1/4">
-                    <div className="w-16 h-16 bg-[#28412e] rounded-xl flex items-center justify-center mt-6">
-                        <FontAwesomeIcon icon={faCheck} className="text-[#24c15d] text-3xl" />
-                    </div>
-                    <h1 className="text-white text-xl my-4">Destek</h1>
-                    <p className="text-md text-[#565555]">Daha fazla bilgi için iletişim bölümünden bizlere ulaşabilirsiniz.</p>
+                <h1 className="text-white text-xl my-4">Randevu Sistemi</h1>
+                <p className="text-md text-[#565555]">
+                  Tüm paketler randevu sistemimiz üzerinden aktif edilir.
+                </p>
+              </div>
+              <div className="flex flex-col w-1/4">
+                <div className="w-16 h-16 bg-[#28412e] rounded-xl flex items-center justify-center mt-6">
+                  <FontAwesomeIcon
+                    icon={faCheck}
+                    className="text-[#24c15d] text-3xl"
+                  />
                 </div>
+                <h1 className="text-white text-xl my-4">Destek</h1>
+                <p className="text-md text-[#565555]">
+                  Daha fazla bilgi için iletişim bölümünden bizlere
+                  ulaşabilirsiniz.
+                </p>
+              </div>
             </div>
+          </div>
         </div>
       </div>
       <Footer />

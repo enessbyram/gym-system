@@ -25,9 +25,8 @@ const Header = () => {
           <Link to="/products" className="cursor-pointer hover:text-[#009fe2] transition-all">Ürünler</Link>
           
           <Link to="/packages" className="cursor-pointer hover:text-[#009fe2] transition-all">Paketler</Link>
-          <h3 className="cursor-pointer hover:text-[#009fe2] transition-all">İletişim</h3>
-          
-          <button className="bg-[#009fe2] text-white px-6 py-1 rounded-xl cursor-pointer drop-shadow-[0_0_5px_rgba(0,159,226,0.5)] hover:bg-[#007bbd] transition-colors duration-300">Randevu Sistemi</button>
+          <Link to="/contact" className="cursor-pointer hover:text-[#009fe2] transition-all">İletişim</Link>
+          <Link to="/login" className="bg-[#009fe2] text-white px-6 py-1 rounded-xl cursor-pointer drop-shadow-[0_0_5px_rgba(0,159,226,0.5)] hover:bg-[#007bbd] transition-colors duration-300">Randevu Sistemi</Link>
         </nav>
       </div>
     </header>

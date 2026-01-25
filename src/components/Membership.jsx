@@ -47,7 +47,7 @@ const Membership = () => {
                   </span>
                   <span className="text-[#666] text-xs">30 gün geçerli</span>
                 </div>
-                <span className="text-[#009ee1] font-bold text-lg">5000₺</span>
+                <span className="text-[#009ee1] font-bold text-lg">5.000₺</span>
               </div>
 
               {/* 2. Fiyat Seçeneği */}
@@ -58,7 +58,7 @@ const Membership = () => {
                   </span>
                   <span className="text-[#666] text-xs">90 gün geçerli</span>
                 </div>
-                <span className="text-[#009ee1] font-bold text-lg">10000₺</span>
+                <span className="text-[#009ee1] font-bold text-lg">10.000₺</span>
               </div>
             </div>
           </div>
@@ -94,7 +94,7 @@ const Membership = () => {
                     10 ders • 40 gün içinde kullanılmalı
                   </span>
                 </div>
-                <span className="text-[#4ca957] font-bold text-lg">9000₺</span>
+                <span className="text-[#4ca957] font-bold text-lg">9.000₺</span>
               </div>
 
               {/* 2. Seçenek: 20 PT Dersi */}
@@ -105,7 +105,7 @@ const Membership = () => {
                     20 ders • 60 gün içinde kullanılmalı
                   </span>
                 </div>
-                <span className="text-[#4ca957] font-bold text-lg">17000₺</span>
+                <span className="text-[#4ca957] font-bold text-lg">17.000₺</span>
               </div>
 
               {/* 3. Seçenek: 30 PT Dersi */}
@@ -116,7 +116,7 @@ const Membership = () => {
                     30 ders • 90 gün içinde kullanılmalı
                   </span>
                 </div>
-                <span className="text-[#4ca957] font-bold text-lg">24000₺</span>
+                <span className="text-[#4ca957] font-bold text-lg">24.000₺</span>
               </div>
             </div>
           </div>
