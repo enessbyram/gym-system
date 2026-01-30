@@ -10,7 +10,6 @@ const Products = () => {
     fetch("http://localhost/gym-system/api/products.php")
       .then((res) => res.json())
       .then((data) => {
-        // Sadece stoğu 0'dan büyük olanları göster
         const availableProducts = data.filter(product => Number(product.stock) > 0);
         setProducts(availableProducts);
       })
@@ -20,15 +19,18 @@ const Products = () => {
   return (
     <>
       <Header />
-      <div className="flex w-full bg-[#161515] h-auto min-h-screen mt-20 justify-center pb-20">
-        <div className="container mt-10">
-          <h1 className="text-5xl font-bold text-white">Ürünlerimiz</h1>
-          <p className="text-[#494949] mt-2 text-lg">
-            Fitness hedeflerinize ulaşmanız için gereken tüm ürünler,
-            mağazamızdan temin edebilirsiniz.
-          </p>
+      <div className="flex w-full bg-[#161515] h-auto min-h-screen mt-20 justify-center pb-20 font-montserrat">
+        <div className="container mt-10 px-4">
           
-          <div className="flex flex-row flex-wrap gap-8 my-10 justify-start">
+          <div className="flex flex-col items-center md:items-start text-center md:text-left">
+            <h1 className="text-3xl md:text-5xl font-bold text-white">Ürünlerimiz</h1>
+            <p className="text-[#888] mt-2 text-base md:text-lg max-w-2xl md:max-w-none">
+              Fitness hedeflerinize ulaşmanız için gereken tüm ürünler,
+              mağazamızdan temin edebilirsiniz.
+            </p>
+          </div>
+          
+          <div className="flex flex-row flex-wrap gap-6 md:gap-8 my-10 justify-center md:justify-start">
             {products.length > 0 ? (
               products.map((product) => (
                 <ProductCard
@@ -41,7 +43,7 @@ const Products = () => {
               ))
             ) : (
               <div className="w-full text-center py-20">
-                <p className="text-[#555] text-xl">
+                <p className="text-[#555] text-lg md:text-xl">
                   Şu an stoklarımızda ürün bulunmamaktadır.
                 </p>
               </div>

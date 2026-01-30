@@ -39,7 +39,6 @@ const MemberAppointmentCalendar = ({ user }) => {
         const occMap = {};
         if (data.occupancy) {
             data.occupancy.forEach(item => {
-                // Tarihi temizle (YYYY-MM-DD formatı garanti olsun)
                 const cleanDate = item.appointment_date.split(' ')[0];
                 if (!occMap[cleanDate]) occMap[cleanDate] = {};
                 occMap[cleanDate][item.time] = item.count;
@@ -73,7 +72,7 @@ const MemberAppointmentCalendar = ({ user }) => {
 
         if (result.success) {
             setShowSuccess(true);
-            await fetchData(); // Listeyi yenile
+            await fetchData();
             setSelectedTime(null);
             setSelectedType(null);
             setSelectedDate(null);
@@ -111,11 +110,8 @@ const MemberAppointmentCalendar = ({ user }) => {
   const startDay = getFirstDayOfMonth(currentDate);
   const totalSlots = Array.from({ length: daysInMonth + startDay });
 
-  // --- KRİTİK DÜZELTME BURADA ---
-  // O gün randevu var mı? (Tarih formatlarını eşleyerek kontrol ediyoruz)
   const checkExistingAppointment = (dateStr) => {
     return myAppointments.some(app => {
-        // Backend'den gelen tarih "2026-01-30 00:00:00" olabilir, split ile temizliyoruz
         const appDateClean = app.appointment_date.split(' ')[0];
         return appDateClean === dateStr && app.status !== 'cancelled';
     });
@@ -129,32 +125,31 @@ const MemberAppointmentCalendar = ({ user }) => {
   };
 
   const selectedDateStr = selectedDate ? formatDateString(selectedDate) : null;
-  // Burada artık doğru sonuç dönecek
   const hasExistingApp = selectedDateStr ? checkExistingAppointment(selectedDateStr) : false;
 
   return (
-    <div className="w-full flex flex-col xl:flex-row gap-8 relative items-stretch">
+    <div className="w-full flex flex-col xl:flex-row gap-8 relative items-stretch font-montserrat">
       {showSuccess && (
-        <div className="fixed top-24 right-10 z-50 bg-[#22c55e] text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 animate-bounce-in">
+        <div className="fixed top-24 right-4 md:right-10 z-50 bg-[#22c55e] text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 animate-bounce-in">
           <FontAwesomeIcon icon={faCheckCircle} className="text-2xl" />
           <div><h4 className="font-bold">Başarılı!</h4><p className="text-sm">Randevunuz oluşturuldu.</p></div>
         </div>
       )}
 
-      <div className="flex-1 bg-[#1e1e1e] border border-[#2e2e2e] rounded-3xl p-6 md:p-8 shadow-2xl flex flex-col">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl font-bold text-white">{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}</h2>
+      <div className="flex-1 bg-[#1e1e1e] border border-[#2e2e2e] rounded-3xl p-4 md:p-8 shadow-2xl flex flex-col">
+        <div className="flex justify-between items-center mb-6 md:mb-8">
+          <h2 className="text-xl md:text-2xl font-bold text-white">{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}</h2>
           <div className="flex gap-2">
-             <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))} className="w-10 h-10 rounded-lg bg-[#2e2e2e] text-white hover:bg-[#009fe2] border border-[#383737] flex items-center justify-center cursor-pointer"><FontAwesomeIcon icon={faChevronLeft} /></button>
-             <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))} className="w-10 h-10 rounded-lg bg-[#2e2e2e] text-white hover:bg-[#009fe2] border border-[#383737] flex items-center justify-center cursor-pointer"><FontAwesomeIcon icon={faChevronRight} /></button>
+             <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))} className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#2e2e2e] text-white hover:bg-[#009fe2] border border-[#383737] flex items-center justify-center cursor-pointer text-sm md:text-base"><FontAwesomeIcon icon={faChevronLeft} /></button>
+             <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))} className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#2e2e2e] text-white hover:bg-[#009fe2] border border-[#383737] flex items-center justify-center cursor-pointer text-sm md:text-base"><FontAwesomeIcon icon={faChevronRight} /></button>
           </div>
         </div>
 
-        <div className="grid grid-cols-7 mb-4 text-[#5b5b5b] font-medium text-center">
+        <div className="grid grid-cols-7 mb-2 md:mb-4 text-[#5b5b5b] font-medium text-center text-xs md:text-base">
           <div>Pzt</div><div>Sal</div><div>Çar</div><div>Per</div><div>Cum</div><div>Cmt</div><div>Paz</div>
         </div>
 
-        <div className="grid grid-cols-7 gap-2 md:gap-4 flex-1">
+        <div className="grid grid-cols-7 gap-1 md:gap-4 flex-1">
           {totalSlots.map((_, index) => {
             const dayNumber = index - startDay + 1;
             if (dayNumber <= 0) return <div key={index}></div>;
@@ -163,7 +158,6 @@ const MemberAppointmentCalendar = ({ user }) => {
             const isSelected = selectedDate === dayNumber;
             const isPast = isPastDate(dayNumber);
             
-            // Tarih temizleme düzeltmesi burada da geçerli
             const dayApps = myAppointments.filter(app => app.appointment_date.split(' ')[0] === dateStr && app.status !== 'cancelled');
 
             return (
@@ -171,15 +165,15 @@ const MemberAppointmentCalendar = ({ user }) => {
                 key={index}
                 onClick={() => handleDateClick(dayNumber)}
                 className={`
-                  relative min-h-20 md:min-h-25 rounded-xl border p-2 flex flex-col justify-between transition-all group
+                  relative min-h-16 md:min-h-25 rounded-xl border p-1 md:p-2 flex flex-col justify-between transition-all group
                   ${isSelected ? 'border-[#009fe2] bg-[#242424]' : 'border-[#2e2e2e] bg-[#161515]'}
                   ${isPast ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer hover:border-[#5b5b5b]'} 
                 `}
               >
-                <span className={`text-lg font-bold ${isSelected ? 'text-[#009fe2]' : 'text-[#5b5b5b]'}`}>{dayNumber}</span>
+                <span className={`text-sm md:text-lg font-bold text-center md:text-left ${isSelected ? 'text-[#009fe2]' : 'text-[#5b5b5b]'}`}>{dayNumber}</span>
                 <div className="flex flex-col gap-1">
                   {dayApps.map((app, i) => (
-                    <div key={i} className={`text-[10px] px-2 py-0.5 rounded text-white text-center shadow-sm font-semibold ${app.type === 'pt' ? 'bg-[#22c55e]' : 'bg-[#009fe2]'}`}>
+                    <div key={i} className={`text-[8px] md:text-[10px] px-1 md:px-2 py-0.5 rounded text-white text-center shadow-sm font-semibold truncate ${app.type === 'pt' ? 'bg-[#22c55e]' : 'bg-[#009fe2]'}`}>
                       {app.time.substring(0, 5)} {app.type === 'pt' ? 'PT' : 'Salon'}
                     </div>
                   ))}
@@ -190,19 +184,18 @@ const MemberAppointmentCalendar = ({ user }) => {
         </div>
       </div>
 
-      <div className="w-full xl:w-96 bg-[#1e1e1e] border border-[#2e2e2e] rounded-3xl p-6 shadow-xl flex flex-col min-h-full">
-        <h3 className="text-xl font-bold text-white mb-6 border-b border-[#383737] pb-4">
+      <div className="w-full xl:w-96 bg-[#1e1e1e] border border-[#2e2e2e] rounded-3xl p-6 shadow-xl flex flex-col h-auto min-h-96 xl:min-h-full">
+        <h3 className="text-lg md:text-xl font-bold text-white mb-6 border-b border-[#383737] pb-4">
             {!selectedDate ? "İşlem Bekleniyor" : `Seçili Tarih: ${selectedDate} ${monthNames[currentDate.getMonth()]}`}
         </h3>
 
         {!selectedDate ? (
-            <div className="flex flex-col items-center justify-center h-64 text-[#5b5b5b] gap-4">
+            <div className="flex flex-col items-center justify-center h-48 md:h-64 text-[#5b5b5b] gap-4">
               <FontAwesomeIcon icon={faCheckCircle} className="text-4xl opacity-20" />
               <p>Takvimden gün seçiniz.</p>
             </div>
         ) : hasExistingApp ? (
-            // RANDEVU MEVCUTSA BURASI ÇALIŞACAK
-            <div className="flex flex-col items-center justify-center h-64 gap-4 animate-fade-in">
+            <div className="flex flex-col items-center justify-center h-48 md:h-64 gap-4 animate-fade-in">
               <div className="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center text-red-500"><FontAwesomeIcon icon={faExclamationCircle} className="text-3xl" /></div>
               <div className="text-center">
                   <h4 className="text-white font-bold text-lg">Randevu Mevcut</h4>
@@ -210,7 +203,6 @@ const MemberAppointmentCalendar = ({ user }) => {
               </div>
             </div>
         ) : (
-            // RANDEVU YOKSA FORM AÇILACAK
             <div className="flex flex-col gap-6 animate-fade-in">
                 <div className="flex flex-col gap-3">
                     <label className="text-sm text-[#5b5b5b] font-medium">Randevu Tipi</label>
@@ -239,7 +231,7 @@ const MemberAppointmentCalendar = ({ user }) => {
                                 const isFull = count >= limit;
 
                                 return (
-                                    <button key={time} disabled={isFull} onClick={() => setSelectedTime(time)} className={`py-2 rounded-lg text-sm font-medium transition-all ${isFull ? 'bg-[#2e1a1a] text-[#5c3a3a] cursor-not-allowed line-through' : selectedTime === time ? (selectedType === 'salon' ? 'bg-[#009fe2] text-white' : 'bg-[#22c55e] text-white') : 'bg-[#262626] text-[#b0b0b0] hover:bg-[#333]'}`}>{time}</button>
+                                    <button key={time} disabled={isFull} onClick={() => setSelectedTime(time)} className={`py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${isFull ? 'bg-[#2e1a1a] text-[#5c3a3a] cursor-not-allowed line-through' : selectedTime === time ? (selectedType === 'salon' ? 'bg-[#009fe2] text-white' : 'bg-[#22c55e] text-white') : 'bg-[#262626] text-[#b0b0b0] hover:bg-[#333]'}`}>{time}</button>
                                 )
                             })}
                         </div>
