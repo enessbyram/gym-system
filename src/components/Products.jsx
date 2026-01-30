@@ -1,49 +1,26 @@
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ProductCard from "./ProductCard";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
-// Resimleri buraya import ediyoruz
-import bccaImg from "../assets/product-images/bcca.jpg";
-import wheyImg from "../assets/product-images/protein.jpg"; // Bu resimlerin var olduğunu varsayıyorum
-import glovesImg from "../assets/product-images/eldiven.jpg";
-import matImg from "../assets/product-images/mat.jpg";
-
 const Products = () => {
-  // Ürün verilerini bir dizi (array) içinde tutuyoruz
-  const products = [
-    {
-      id: 1,
-      image: wheyImg,
-      title: "Whey Protein",
-      price: "1.200 ₺",
-      description: "Hızlı emilim sağlayan, kas onarımını destekleyen yüksek kaliteli protein tozu."
-    },
-    {
-      id: 2,
-      image: bccaImg,
-      title: "BCAA",
-      price: "900 ₺",
-      description: "Kas yorgunluğunu azaltan ve toparlanmayı hızlandıran amino asit desteği."
-    },
-    {
-      id: 3,
-      image: glovesImg,
-      title: "Boks Eldiveni",
-      price: "300 ₺",
-      description: "Ağırlık antrenmanlarında ellerinizi koruyan, kaydırmaz özel tasarım eldiven."
-    },
-    {
-      id: 4,
-      image: matImg,
-      title: "Yoga Matı",
-      price: "450 ₺",
-      description: "Konforlu egzersiz deneyimi için kaymaz tabanlı, dayanıklı mat."
-    }
-  ];
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost/gym-system/api/products.php")
+      .then((res) => res.json())
+      .then((data) => {
+        // 1. ADIM: Sadece stoğu 0'dan büyük olanları filtrele
+        const availableProducts = data.filter(product => Number(product.stock) > 0);
+        
+        // 2. ADIM: Filtrelenmiş listeden ilk 4'ünü al
+        setProducts(availableProducts.slice(0, 4));
+      })
+      .catch((err) => console.error("Veri çekme hatası:", err));
+  }, []);
 
   return (
-    // h-200 yerine min-h-screen veya h-auto kullanmak içerik arttığında taşmayı önler, ama şimdilik senin yapını korudum.
     <div className="bg-[#161515] w-full h-auto py-20 flex flex-col items-center"> 
       <div className="container flex flex-col gap-4 justify-start mb-10">
         <h1 className="text-5xl font-bold text-white">Öne Çıkan Ürünler</h1>
@@ -52,17 +29,21 @@ const Products = () => {
         </p>
       </div>
       
-      {/* Kartların Listelenmesi */}
       <div className="container flex flex-row flex-wrap gap-8 justify-center">
-        {products.map((product) => (
-          <ProductCard 
-            key={product.id} // React listelerinde unique bir key ister
-            image={product.image}
-            title={product.title}
-            price={product.price}
-            description={product.description}
-          />
-        ))}
+        {products.length > 0 ? (
+          products.map((product) => (
+            <ProductCard 
+              key={product.id}
+              image={product.image}
+              title={product.name}
+              price={`${Number(product.price).toLocaleString('tr-TR')} ₺`} 
+              description={product.description}
+            />
+          ))
+        ) : (
+          // Eğer hiç stoklu ürün yoksa veya yükleniyorsa
+          <p className="text-[#555] italic">Şu an öne çıkan ürün bulunmuyor.</p>
+        )}
       </div>
 
       <div className="w-full mt-16 flex justify-center items-center">

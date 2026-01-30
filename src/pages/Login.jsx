@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import LoginForm from "../components/LoginForm"; // Yeni componenti import et
+import LoginForm from "../components/LoginForm"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDumbbell, faMedal, faShield, faUser } from "@fortawesome/free-solid-svg-icons";
 
@@ -27,12 +27,12 @@ const Login = () => {
   return (
     <>
       <Header />
-      <div className="bg-[#161515] mt-20 w-full min-h-133 flex flex-col items-center justify-center gap-6 py-10">
+      <div className="bg-[#161515] mt-20 w-full min-h-screen flex flex-col items-center justify-center gap-6 py-10">
         
         {/* Eğer bir rol seçilmediyse Kartları Göster */}
         {!selectedRole ? (
           <>
-            <div className="cursor-default flex items-center text-5xl gap-3 z-10">
+            <div className="cursor-default flex items-center text-5xl gap-3 z-10 mb-8">
               <FontAwesomeIcon
                 icon={faDumbbell}
                 className="text-[#009fe2] rotate-135"
@@ -43,9 +43,9 @@ const Login = () => {
                 <span className="text-white">WellnessClub</span>
               </div>
             </div>
-            <p className="text-[#434242] text-xl">Lütfen giriş türünüzü seçiniz</p>
+            <p className="text-[#434242] text-xl mb-4">Lütfen giriş türünüzü seçiniz</p>
             
-            <div className="flex flex-row gap-6">
+            <div className="flex flex-col md:flex-row gap-6">
               {/* Üye Kartı */}
               <div 
                 onClick={() => setSelectedRole("member")}

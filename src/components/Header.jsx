@@ -54,7 +54,7 @@ const Header = () => {
                <span className="text-[#5b5b5b] text-sm hidden md:block">Hoşgeldin, {user.name}</span>
                <button 
                 onClick={logout}
-                className="flex items-center gap-2 border border-[#383737] bg-[#222121] px-4 py-2 rounded-lg text-white hover:border-red-500 hover:text-red-500 transition-all duration-300"
+                className="flex items-center cursor-pointer gap-2 border border-[#383737] bg-[#222121] px-4 py-2 rounded-lg text-white hover:border-red-500 hover:text-red-500 transition-all duration-300"
                >
                  <FontAwesomeIcon icon={faSignOutAlt} />
                  Çıkış

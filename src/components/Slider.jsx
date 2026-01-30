@@ -1,20 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight, faDumbbell } from '@fortawesome/free-solid-svg-icons';
 
-// Fotoğrafları import ediyoruz
-import photo1 from "../assets/img/photo-1.jpg";
-import photo2 from "../assets/img/photo-2.jpg";
-import photo3 from "../assets/img/photo-3.jpg";
-
-const slides = [
-  { url: photo1, alt: "Spor Salonu Görünümü 1" },
-  { url: photo2, alt: "Spor Salonu Görünümü 2" },
-  { url: photo3, alt: "Spor Salonu Görünümü 3" },
-];
-
 const Slider = () => {
+  // Verileri tutacak state
+  const [slides, setSlides] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Sayfa yüklendiğinde verileri çek
+  useEffect(() => {
+    fetch("http://localhost/gym-system/api/sliders.php")
+      .then((res) => res.json())
+      .then((data) => {
+        // Sadece aktif olanları veya tümünü alabiliriz.
+        // API zaten image yolunu tam URL olarak veriyor.
+        if (data.length > 0) {
+          setSlides(data);
+        }
+      })
+      .catch((err) => console.error("Slider verisi çekilemedi:", err));
+  }, []);
 
   // Önceki slayta geçiş
   const prevSlide = () => {
@@ -35,14 +40,24 @@ const Slider = () => {
     setCurrentIndex(slideIndex);
   };
 
+  // Eğer veri henüz yüklenmediyse veya veri yoksa, loading veya placeholder göster
+  // Bu kontrolü yapmazsak "slides[currentIndex] undefined" hatası alırız.
+  if (slides.length === 0) {
+    return (
+      <div className="mt-20 h-120 w-full m-auto bg-[#1a1a1a] flex items-center justify-center">
+        <div className="text-white text-lg animate-pulse">Yükleniyor...</div>
+      </div>
+    );
+  }
+
   return (
-    // Ana Container (mt-20 ve yükseklik ayarları)
+    // Ana Container (Tasarım aynen korundu)
     <div className="mt-20 h-120 w-full m-auto relative group font-montserrat">
       
-      {/* Arkaplan Resmi */}
+      {/* Arkaplan Resmi - Backend verisi 'image' key'i ile geliyor */}
       <div
-        style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
-        className="w-full h-full bg-center bg-cover duration-500 ease-out"
+        style={{ backgroundImage: `url(${slides[currentIndex].image})` }}
+        className="w-full h-full bg-center bg-cover duration-500 ease-out transition-all"
       ></div>
 
       {/* Siyah Katman (Overlay) */}
@@ -50,7 +65,7 @@ const Slider = () => {
 
       {/* Sol Ok */}
       <div 
-        className="absolute top-1/2 -translate-y-1/2 left-5 text-2xl rounded-full p-2 bg-black/50 text-white cursor-pointer hover:bg-black/70 transition-colors"
+        className="absolute top-1/2 -translate-y-1/2 left-5 text-2xl rounded-full p-2 bg-black/50 text-white cursor-pointer hover:bg-black/70 transition-colors z-20"
         onClick={prevSlide}
       >
         <FontAwesomeIcon icon={faChevronLeft} className="w-6 h-6 flex items-center justify-center" />
@@ -58,14 +73,14 @@ const Slider = () => {
 
       {/* Sağ Ok */}
       <div 
-        className="absolute top-1/2 -translate-y-1/2 right-5 text-2xl rounded-full p-2 bg-black/50 text-white cursor-pointer hover:bg-black/70 transition-colors"
+        className="absolute top-1/2 -translate-y-1/2 right-5 text-2xl rounded-full p-2 bg-black/50 text-white cursor-pointer hover:bg-black/70 transition-colors z-20"
         onClick={nextSlide}
       >
          <FontAwesomeIcon icon={faChevronRight} className="w-6 h-6 flex items-center justify-center" />
       </div>
 
-      {/* Logo ve Yazı Alanı (YENİ EKLENDİ) */}
-      <div className="absolute cursor-default bottom-16 left-25 flex items-center text-6xl gap-3 z-10">
+      {/* Logo ve Yazı Alanı */}
+      <div className="absolute cursor-default bottom-16 left-8 md:left-25 flex items-center text-4xl md:text-6xl gap-3 z-10">
           <FontAwesomeIcon icon={faDumbbell} className="text-[#009fe2] rotate-135" />
           <div className="flex items-center font-bold">
               <span className="text-[#009fe2]">EA</span>
@@ -78,10 +93,8 @@ const Slider = () => {
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
         {slides.map((slide, slideIndex) => (
           <div
-            key={slideIndex}
+            key={slide.id} // Backend ID'sini key olarak kullanmak daha sağlıklıdır
             onClick={() => goToSlide(slideIndex)}
-            // Aktif ise genişliği arttır (w-8) ve rengi koyu yeşil yap
-            // Pasif ise küçük daire kal (w-3) ve rengi transparan beyaz yap
             className={`h-2 rounded-full cursor-pointer transition-all duration-300 ${
               currentIndex === slideIndex 
                 ? "w-8 bg-[#00c750]" 
