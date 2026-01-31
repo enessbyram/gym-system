@@ -7,7 +7,7 @@ const Slider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    fetch("http://localhost/gym-system/api/sliders.php")
+    fetch("/api/sliders.php")
       .then((res) => res.json())
       .then((data) => {
         if (data.length > 0) {

@@ -17,7 +17,7 @@ const LoginForm = ({ title, themeColor, onBack, role }) => {
     setError("");
 
     try {
-      const response = await fetch("http://localhost/gym-system/api/login.php", {
+      const response = await fetch("/api/login.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, role }),

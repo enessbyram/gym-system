@@ -12,7 +12,7 @@ const Membership = () => {
   const [ptPackages, setPtPackages] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost/gym-system/api/packages.php")
+    fetch("/api/packages.php")
       .then((res) => res.json())
       .then((data) => {
         setGymPackages(data.filter((pkg) => pkg.type === "gym"));

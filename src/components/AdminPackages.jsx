@@ -24,7 +24,7 @@ const AdminPackages = () => {
   // 1. Paketleri Getir
   const fetchPackages = async () => {
     try {
-      const response = await fetch("http://localhost/gym-system/api/packages.php");
+      const response = await fetch("/api/packages.php");
       const data = await response.json();
       // Gelen veride features null ise boş dizi yapalım ki hata vermesin
       const processedData = data.map(pkg => ({
@@ -102,7 +102,7 @@ const AdminPackages = () => {
     const finalData = { ...formData, features: cleanedFeatures };
 
     try {
-      const response = await fetch("http://localhost/gym-system/api/packages.php", {
+      const response = await fetch("/api/packages.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // JSON OLARAK GÖNDERİYORUZ
@@ -127,7 +127,7 @@ const AdminPackages = () => {
   const handleDelete = async (id) => {
     if(window.confirm("Bu paketi silmek istediğinize emin misiniz?")) {
       try {
-        const response = await fetch(`http://localhost/gym-system/api/packages.php?id=${id}`, {
+        const response = await fetch(`/api/packages.php?id=${id}`, {
           method: "DELETE"
         });
         const result = await response.json();

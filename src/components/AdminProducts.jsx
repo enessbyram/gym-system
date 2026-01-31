@@ -29,7 +29,7 @@ const AdminProducts = () => {
   // 1. Ürünleri Getir (READ)
   const fetchProducts = async () => {
     try {
-      const response = await fetch("http://localhost/gym-system/api/products.php");
+      const response = await fetch("/api/products.php");
       const data = await response.json();
       setProducts(data);
     } catch (error) {
@@ -101,7 +101,7 @@ const AdminProducts = () => {
     }
 
     try {
-      const response = await fetch("http://localhost/gym-system/api/products.php", {
+      const response = await fetch("/api/products.php", {
         method: "POST",
         body: dataToSend, // JSON.stringify YAPMIYORUZ, FormData direkt gider
       });
@@ -124,7 +124,7 @@ const AdminProducts = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Bu ürünü silmek istediğinize emin misiniz?")) {
       try {
-        const response = await fetch(`http://localhost/gym-system/api/products.php?id=${id}`, {
+        const response = await fetch(`/api/products.php?id=${id}`, {
           method: "DELETE",
         });
         const result = await response.json();

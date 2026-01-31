@@ -29,7 +29,7 @@ const MemberAppointmentCalendar = ({ user }) => {
 
   const fetchData = async () => {
     try {
-      const res = await fetch(`http://localhost/gym-system/api/member_appointments.php?action=init&user_id=${user.id}`);
+      const res = await fetch(`/api/member_appointments.php?action=init&user_id=${user.id}`);
       const data = await res.json();
       
       if (data.success) {
@@ -63,7 +63,7 @@ const MemberAppointmentCalendar = ({ user }) => {
     };
 
     try {
-        const res = await fetch("http://localhost/gym-system/api/member_appointments.php", {
+        const res = await fetch("/api/member_appointments.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)

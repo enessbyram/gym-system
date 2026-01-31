@@ -24,7 +24,7 @@ const AdminMembers = () => {
 
   const fetchData = async () => {
     try {
-      const memRes = await fetch("http://localhost/gym-system/api/members.php");
+      const memRes = await fetch("/api/members.php");
       const memData = await memRes.json();
 
       if (Array.isArray(memData)) {
@@ -33,7 +33,7 @@ const AdminMembers = () => {
         setMembers([]); 
       }
 
-      const pkgRes = await fetch("http://localhost/gym-system/api/packages.php");
+      const pkgRes = await fetch("/api/packages.php");
       const pkgData = await pkgRes.json();
       
       if (Array.isArray(pkgData)) {
@@ -89,7 +89,7 @@ const AdminMembers = () => {
     }
 
     try {
-      const response = await fetch("http://localhost/gym-system/api/members.php", {
+      const response = await fetch("/api/members.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)

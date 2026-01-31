@@ -12,7 +12,7 @@ const MemberAppointments = ({ onBack }) => {
 
   useEffect(() => {
     if (user && user.id) {
-      fetch(`http://localhost/gym-system/api/member_appointments.php?action=init&user_id=${user.id}`)
+      fetch(`/api/member_appointments.php?action=init&user_id=${user.id}`)
         .then((res) => res.json())
         .then((data) => {
           if (data.success && Array.isArray(data.appointments)) {

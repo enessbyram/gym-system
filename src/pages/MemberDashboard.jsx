@@ -22,7 +22,7 @@ const MemberDashboard = () => {
 
   useEffect(() => {
     if (!loading && user && user.id) {
-      fetch(`http://localhost/gym-system/api/member_dashboard.php?id=${user.id}`)
+      fetch(`/api/member_dashboard.php?id=${user.id}`)
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {

@@ -14,15 +14,10 @@ import MemberDashboard from "./pages/MemberDashboard";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    {/* ÖNEMLİ: basename kısmına repo adını '/repo-adi' şeklinde ekliyoruz.
-        Böylece Router, tüm linklerin başına bunu otomatik ekliyor.
-    */}
-    <BrowserRouter basename="/gym-system">
+    <BrowserRouter>
       <AuthProvider>
         <Routes>
-          {/* Artık başına /gym-system yazmana gerek yok, sadece / yeterli */}
           <Route path="/" element={<App />} />
-
           <Route path="/products" element={<Products isPage={true} />} />
           <Route path="/packages" element={<Packages isPage={true} />} />
           <Route path="/contact" element={<Contact />} />

@@ -19,7 +19,7 @@ const PTAppointmentCalendar = () => {
 
   useEffect(() => {
     if (user && user.id) {
-        fetch(`http://localhost/gym-system/api/pt_appointments.php?action=get_all&pt_id=${user.id}`)
+        fetch(`/api/pt_appointments.php?action=get_all&pt_id=${user.id}`)
             .then(res => res.json())
             .then(data => {
                 if (data.success) {

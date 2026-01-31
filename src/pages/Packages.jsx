@@ -14,7 +14,7 @@ const Packages = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost/gym-system/api/packages.php")
+    fetch("/api/packages.php")
       .then((res) => res.json())
       .then((data) => {
         setGymPackages(data.filter((pkg) => pkg.type === "gym"));

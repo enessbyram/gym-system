@@ -11,7 +11,7 @@ const AdminAppointments = () => {
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost/gym-system/api/admin_appointments.php")
+    fetch("/api/admin_appointments.php")
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {

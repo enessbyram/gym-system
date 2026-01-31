@@ -8,7 +8,7 @@ const Products = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost/gym-system/api/products.php")
+    fetch("/api/products.php")
       .then((res) => res.json())
       .then((data) => {
         const availableProducts = data.filter(product => Number(product.stock) > 0);

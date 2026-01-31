@@ -18,7 +18,11 @@ const PTAppointmentManagement = () => {
 
   const fetchAppointments = async () => {
     try {
-      const res = await fetch(`http://localhost/gym-system/api/pt_appointments.php?action=get_all&pt_id=${user.id}`);
+      // --- DÜZELTME BURADA YAPILDI ---
+      // Linkin sonuna &t=${Date.now()} ekledik. Bu "Cache Busting" tekniğidir.
+      // iPhone'un "eski veriyi gösterme" huyunu bozar.
+      const res = await fetch(`/api/pt_appointments.php?action=get_all&pt_id=${user.id}&t=${Date.now()}`);
+      
       const data = await res.json();
       
       if (data.success) {
@@ -35,7 +39,7 @@ const PTAppointmentManagement = () => {
   // --- DERSİ TAMAMLA ---
   const handleCompleteLesson = async (id) => {
     try {
-        const res = await fetch(`http://localhost/gym-system/api/pt_appointments.php?action=complete`, {
+        const res = await fetch(`/api/pt_appointments.php?action=complete`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: id })

@@ -15,7 +15,7 @@ const AdminSlider = () => {
   // 1. Verileri Çek (READ)
   const fetchSliders = async () => {
     try {
-      const response = await fetch("http://localhost/gym-system/api/sliders.php");
+      const response = await fetch("/api/sliders.php");
       const data = await response.json();
       setSliderImages(data);
     } catch (error) {
@@ -48,7 +48,7 @@ const AdminSlider = () => {
     formData.append("image", selectedFile);
 
     try {
-      const response = await fetch("http://localhost/gym-system/api/sliders.php", {
+      const response = await fetch("/api/sliders.php", {
         method: "POST",
         body: formData, // Header ekleme, FormData otomatik halleder
       });
@@ -70,7 +70,7 @@ const AdminSlider = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Bu slider görselini silmek istediğinize emin misiniz?")) {
       try {
-        const response = await fetch(`http://localhost/gym-system/api/sliders.php?id=${id}`, {
+        const response = await fetch(`/api/sliders.php?id=${id}`, {
           method: "DELETE"
         });
         const result = await response.json();
