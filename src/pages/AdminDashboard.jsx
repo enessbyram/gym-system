@@ -23,7 +23,8 @@ const AdminDashboard = () => {
       id: "products",
       label: "Ürünler",
       icon: faShoppingBag,
-      activeClass: "bg-[#7c3aed] text-white shadow-[0_0_20px_rgba(0,159,226,0.4)]",
+      // DÜZELTME: Mavi gölge -> Mor gölge (rgba(124,58,237,0.4))
+      activeClass: "bg-[#7c3aed] text-white shadow-[0_0_20px_rgba(124,58,237,0.4)]",
     },
     {
       id: "packages",
@@ -47,7 +48,8 @@ const AdminDashboard = () => {
       id: "slider",
       label: "Slider", 
       icon: faImage,
-      activeClass: "bg-[#7c3aed] text-white shadow-[0_0_20px_rgba(0,159,226,0.4)]",
+      // DÜZELTME: Mavi gölge -> Mor gölge (rgba(124,58,237,0.4))
+      activeClass: "bg-[#7c3aed] text-white shadow-[0_0_20px_rgba(124,58,237,0.4)]",
     },
   ];
 
