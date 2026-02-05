@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ProductCard from "./ProductCard";
+import ProductCard from "../components/ProductCard"; 
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
@@ -11,7 +11,9 @@ const Products = () => {
     fetch("/api/products.php")
       .then((res) => res.json())
       .then((data) => {
+        // Stok kontrolü (0'dan büyük olanları al)
         const availableProducts = data.filter(product => Number(product.stock) > 0);
+        // İlk 4 ürünü göster
         setProducts(availableProducts.slice(0, 4));
       })
       .catch((err) => console.error("Veri çekme hatası:", err));
@@ -45,7 +47,20 @@ const Products = () => {
       <div className="w-full mt-10 md:mt-16 flex justify-center items-center px-4">
         <Link 
           to="/products" 
-          className="bg-[#009ee1] cursor-pointer text-white px-6 py-3 rounded-lg hover:bg-[#007bbd] transition duration-300 shadow-[0_0_20px_rgba(0,158,225,0.7)] hover:shadow-[0_0_30px_rgba(0,158,225,0.9)] flex items-center justify-center text-base md:text-lg w-full md:w-auto sm:w-150 max-sm:w-70"
+          className="
+            bg-[#7c3aed] 
+            text-white 
+            px-6 py-3 
+            rounded-lg 
+            cursor-pointer 
+            transition duration-300 
+            hover:bg-[#6d28d9] 
+            shadow-[0_0_20px_rgba(124,58,237,0.7)] 
+            hover:shadow-[0_0_30px_rgba(124,58,237,0.9)] 
+            flex items-center justify-center 
+            text-base md:text-lg 
+            w-full md:w-auto sm:w-150 max-sm:w-70
+          "
         >
           <span className="drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)] flex items-center">
             Tüm Ürünleri Görüntüle

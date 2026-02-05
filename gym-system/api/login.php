@@ -1,4 +1,5 @@
 <?php
+// api/login.php
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json; charset=UTF-8");
@@ -20,15 +21,9 @@ if(isset($data->email) && isset($data->password) && isset($data->role)) {
         if ($user) {
             if ($password === $user['password']) {
                 
-                if ($role === 'member') {
-                    $stmtStatus = $pdo->prepare("SELECT status FROM memberships WHERE user_id = ? ORDER BY id DESC LIMIT 1");
-                    $stmtStatus->execute([$user['id']]);
-                    $membershipStatus = $stmtStatus->fetchColumn();
-
-                    if ($membershipStatus && $membershipStatus !== 'Aktif') {
-                        echo json_encode(["success" => false, "message" => "Üyeliğiniz pasif durumdadır. Yönetici ile görüşünüz."]);
-                        exit;
-                    }
+                if ($user['status'] == 0) {
+                    echo json_encode(["success" => false, "message" => "Hesabınız pasif durumdadır. Yönetici ile görüşünüz."]);
+                    exit;
                 }
 
                 echo json_encode([

@@ -1,33 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTrash, faUpload, faTimes, faImage } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTrash, faUpload, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const AdminSlider = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
-
-  // Slider verileri artık backend'den gelecek
   const [sliderImages, setSliderImages] = useState([]);
 
-  // --- API İŞLEMLERİ ---
+  const API_BASE_URL = "/uploads/";
 
-  // 1. Verileri Çek (READ)
+  const getImageUrl = (img) => {
+    if (!img) return null;
+    if (img.includes("localhost") || img.includes("api/uploads")) {
+        const fileName = img.split('/').pop();
+        return `${API_BASE_URL}${fileName}`;
+    }
+    if (img.startsWith("http")) return img; 
+    return `${API_BASE_URL}${img}`;
+  };
+
   const fetchSliders = async () => {
     try {
       const response = await fetch("/api/sliders.php");
       const data = await response.json();
       setSliderImages(data);
     } catch (error) {
-      console.error("Slider verisi çekilemedi:", error);
+      console.error(error);
     }
   };
 
   useEffect(() => {
     fetchSliders();
   }, []);
-
-  // --- HANDLERS ---
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -37,7 +42,6 @@ const AdminSlider = () => {
     }
   };
 
-  // 2. Yeni Görsel Ekle (CREATE)
   const handleAddImage = async () => {
     if (!selectedFile) {
       alert("Lütfen bir görsel seçin.");
@@ -50,23 +54,22 @@ const AdminSlider = () => {
     try {
       const response = await fetch("/api/sliders.php", {
         method: "POST",
-        body: formData, // Header ekleme, FormData otomatik halleder
+        body: formData,
       });
       
       const result = await response.json();
 
       if (result.success) {
-        await fetchSliders(); // Listeyi yenile
+        await fetchSliders();
         closeModal();
       } else {
         alert("Hata: " + result.error);
       }
     } catch (error) {
-      console.error("Yükleme hatası:", error);
+      console.error(error);
     }
   };
 
-  // 3. Silme İşlemi (DELETE)
   const handleDelete = async (id) => {
     if (window.confirm("Bu slider görselini silmek istediğinize emin misiniz?")) {
       try {
@@ -81,7 +84,7 @@ const AdminSlider = () => {
           alert("Hata: " + result.error);
         }
       } catch (error) {
-        console.error("Silme hatası:", error);
+        console.error(error);
       }
     }
   };
@@ -95,7 +98,6 @@ const AdminSlider = () => {
   return (
     <div className="w-full relative animate-fade-in">
       
-      {/* Üst Kısım: Yeni Ekle Butonu */}
       <div className="mb-8">
         <button 
           onClick={() => setShowModal(true)}
@@ -106,22 +108,19 @@ const AdminSlider = () => {
         </button>
       </div>
 
-      {/* Görsel Listesi (Grid) */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {sliderImages.length > 0 ? (
           sliderImages.map((item) => (
             <div key={item.id} className="bg-[#1e1e1e] border border-[#2e2e2e] rounded-2xl p-4 shadow-xl hover:border-[#444] transition-all group">
               
-              {/* Görsel Alanı */}
               <div className="w-full h-48 rounded-xl overflow-hidden mb-4 relative bg-[#252525]">
                 <img 
-                  src={item.image} 
+                  src={getImageUrl(item.image)} 
                   alt={item.alt || "Slider"} 
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
                 />
               </div>
 
-              {/* Sil Butonu */}
               <button 
                 onClick={() => handleDelete(item.id)}
                 className="w-full bg-[#3a1a1a] border border-red-900/30 text-red-500 cursor-pointer hover:bg-red-500 hover:text-white py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2"
@@ -136,12 +135,10 @@ const AdminSlider = () => {
         )}
       </div>
 
-      {/* --- MODAL (Yeni Görsel Ekleme) --- */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
           <div className="bg-[#1e1e1e] border border-[#383737] w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden">
             
-            {/* Header */}
             <div className="bg-[#252525] p-5 border-b border-[#383737] flex justify-between items-center">
               <h3 className="text-xl font-bold text-white">Yeni Slider Görseli</h3>
               <button onClick={closeModal} className="text-[#5b5b5b] hover:text-white transition-colors cursor-pointer">
@@ -149,13 +146,11 @@ const AdminSlider = () => {
               </button>
             </div>
 
-            {/* Body */}
             <div className="p-8 flex flex-col gap-6">
               
               <div className="flex flex-col gap-2">
                 <label className="text-[#888] text-sm">Slider Görseli Seç</label>
                 
-                {/* Özel Dosya Input Yapısı */}
                 <div className="relative w-full">
                     <input 
                       type="file" 
@@ -175,7 +170,6 @@ const AdminSlider = () => {
                 </div>
               </div>
 
-              {/* Önizleme Alanı (Varsa) */}
               {previewUrl && (
                 <div className="w-full h-40 rounded-xl overflow-hidden border border-[#3e3e3e] relative">
                     <img src={previewUrl} alt="Önizleme" className="w-full h-full object-cover" />
@@ -185,7 +179,6 @@ const AdminSlider = () => {
                 </div>
               )}
 
-              {/* Aksiyon Butonları */}
               <div className="flex gap-3 mt-2">
                 <button 
                   onClick={handleAddImage}

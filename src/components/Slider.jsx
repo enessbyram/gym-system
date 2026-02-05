@@ -1,10 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight, faDumbbell } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import logo from "../assets/logo.png"; 
 
 const Slider = () => {
   const [slides, setSlides] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // DÜZELTME: "/api/uploads/" yerine sadece "/uploads/"
+  const API_BASE_URL = "/uploads/";
+
+  const getImageUrl = (img) => {
+    if (!img) return "";
+
+    // Localhost veya yanlış path varsa temizle, sadece dosya adını al
+    if (img.includes("localhost") || img.includes("api/uploads")) {
+        const fileName = img.split('/').pop();
+        return `${API_BASE_URL}${fileName}`;
+    }
+
+    if (img.startsWith("http")) return img;
+    return `${API_BASE_URL}${img}`;
+  };
 
   useEffect(() => {
     fetch("/api/sliders.php")
@@ -45,7 +62,7 @@ const Slider = () => {
     <div className="mt-20 h-96 md:h-120 w-full m-auto relative group font-montserrat select-none">
       
       <div
-        style={{ backgroundImage: `url(${slides[currentIndex].image})` }}
+        style={{ backgroundImage: `url(${getImageUrl(slides[currentIndex].image)})` }}
         className="w-full h-full bg-center bg-cover duration-500 ease-out transition-all"
       ></div>
 
@@ -65,18 +82,12 @@ const Slider = () => {
          <FontAwesomeIcon icon={faChevronRight} className="w-5 h-5 md:w-6 md:h-6 flex items-center justify-center" />
       </div>
 
-      <div className="absolute cursor-default bottom-10 md:bottom-16 left-4 md:left-24 flex items-center gap-2 md:gap-4 z-10">
-          
-          <FontAwesomeIcon 
-            icon={faDumbbell} 
-            className="text-[#009fe2] rotate-135 text-4xl md:text-6xl drop-shadow-lg" 
+      <div className="absolute cursor-default bottom-10 md:bottom-16 left-4 md:left-24 z-10">
+          <img 
+            src={logo} 
+            alt="Lumex Consulting" 
+            className="h-24 md:h-32 object-contain drop-shadow-[0_0_15px_rgba(124,58,237,0.8)]" 
           />
-          
-          <div className="flex items-center font-bold text-3xl md:text-5xl lg:text-6xl drop-shadow-lg">
-              <span className="text-[#009fe2]">EA</span>
-              <span className="text-[#bbb] mx-2 text-2xl md:text-5xl">|</span>
-              <span className="text-white">WellnessClub</span>
-          </div>
       </div>
 
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">

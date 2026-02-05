@@ -43,10 +43,11 @@ const Packages = () => {
           </p>
         </div>
 
+        {/* --- SPOR SALONU BÖLÜMÜ --- */}
         <div className="container mt-8 px-4 flex flex-row items-center justify-center md:justify-start gap-2">
           <FontAwesomeIcon
             icon={faDumbbell}
-            className="text-[#009ee1] text-2xl md:text-3xl rotate-135"
+            className="text-[#7c3aed] text-2xl md:text-3xl rotate-135"
           />
           <h3 className="text-2xl md:text-3xl text-white font-bold">
             Spor Salonu Paketleri
@@ -60,16 +61,17 @@ const Packages = () => {
             gymPackages.map((pkg) => (
               <div
                 key={pkg.id}
-                className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1rem)] min-w-70 h-auto my-4 rounded-2xl hover:border-[#009ee1] transition-all hover:scale-102 border border-[#353434] bg-[#222121] flex flex-col"
+                className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1rem)] min-w-70 h-auto my-4 rounded-2xl hover:border-[#7c3aed] transition-all hover:scale-102 border border-[#353434] bg-[#222121] flex flex-col"
               >
                 <div className="px-6 py-6 flex justify-between items-center flex-row">
-                  <div className="flex items-center justify-center bg-[#243a47] w-12 h-12 rounded-xl shrink-0">
+                  {/* DÜZELTME: Mavi arka plan (#243a47) -> Mor (#7c3aed/20) yapıldı */}
+                  <div className="flex items-center justify-center bg-[#7c3aed]/20 w-12 h-12 rounded-xl shrink-0">
                     <FontAwesomeIcon
                       icon={faDumbbell}
-                      className="text-[#009ee1] text-2xl rotate-135"
+                      className="text-[#7c3aed] text-2xl rotate-135"
                     />
                   </div>
-                  <h3 className="text-[#009ee1] text-2xl md:text-3xl font-semibold">
+                  <h3 className="text-[#7c3aed] text-2xl md:text-3xl font-semibold">
                     {formatPrice(pkg.price)}₺
                   </h3>
                 </div>
@@ -82,7 +84,7 @@ const Packages = () => {
                   <p className="text-[#888] text-sm md:text-base mx-6 mb-2">
                     <FontAwesomeIcon
                       icon={faCheck}
-                      className="text-[#009ee1] mr-2"
+                      className="text-[#7c3aed] mr-2"
                     />
                     {pkg.duration_days} Gün Geçerli
                   </p>
@@ -92,7 +94,7 @@ const Packages = () => {
                       <p key={index} className="text-[#888] text-sm md:text-base mx-6 mb-2">
                         <FontAwesomeIcon
                           icon={faCheck}
-                          className="text-[#009ee1] mr-2"
+                          className="text-[#7c3aed] mr-2"
                         />
                         {feature}
                       </p>
@@ -105,6 +107,7 @@ const Packages = () => {
           )}
         </div>
 
+        {/* --- PT BÖLÜMÜ (YEŞİL - DEĞİŞMEDİ) --- */}
         <div className="container mt-12 px-4 flex flex-row items-center justify-center md:justify-start gap-2">
           <FontAwesomeIcon
             icon={faBagShopping}
@@ -172,6 +175,7 @@ const Packages = () => {
           )}
         </div>
 
+        {/* --- BİLGİLENDİRME KUTUSU --- */}
         <div className="container px-4">
           <div className="bg-[#222121] border border-[#353434] min-h-80 my-8 px-6 md:px-10 py-10 rounded-2xl w-full flex flex-col items-center md:items-start">
             <h2 className="text-white text-2xl md:text-3xl font-semibold mt-0 md:mt-6 text-center md:text-left">
@@ -179,9 +183,11 @@ const Packages = () => {
             </h2>
             <div className="w-full flex flex-col md:flex-row gap-8 mt-6">
               
+              {/* 1. KUTU (MOR) */}
               <div className="flex flex-col w-full md:w-1/4 items-center md:items-start text-center md:text-left">
-                <div className="w-16 h-16 bg-[#243a47] rounded-xl flex items-center justify-center">
-                  <FontAwesomeIcon icon={faCheck} className="text-[#009ee1] text-3xl" />
+                {/* DÜZELTME: bg-[#243a47] -> bg-[#7c3aed]/20 */}
+                <div className="w-16 h-16 bg-[#7c3aed]/20 rounded-xl flex items-center justify-center">
+                  <FontAwesomeIcon icon={faCheck} className="text-[#7c3aed] text-3xl" />
                 </div>
                 <h1 className="text-white text-xl my-4 font-bold">Esnek Kullanım</h1>
                 <p className="text-sm md:text-base text-[#888]">
@@ -189,6 +195,7 @@ const Packages = () => {
                 </p>
               </div>
 
+              {/* 2. KUTU (YEŞİL - DEĞİŞMEDİ) */}
               <div className="flex flex-col w-full md:w-1/4 items-center md:items-start text-center md:text-left">
                 <div className="w-16 h-16 bg-[#28412e] rounded-xl flex items-center justify-center">
                   <FontAwesomeIcon icon={faCheck} className="text-[#24c15d] text-3xl" />
@@ -199,9 +206,11 @@ const Packages = () => {
                 </p>
               </div>
 
+              {/* 3. KUTU (MOR) */}
               <div className="flex flex-col w-full md:w-1/4 items-center md:items-start text-center md:text-left">
-                <div className="w-16 h-16 bg-[#243a47] rounded-xl flex items-center justify-center">
-                  <FontAwesomeIcon icon={faCheck} className="text-[#009ee1] text-3xl" />
+                {/* DÜZELTME: bg-[#243a47] -> bg-[#7c3aed]/20 */}
+                <div className="w-16 h-16 bg-[#7c3aed]/20 rounded-xl flex items-center justify-center">
+                  <FontAwesomeIcon icon={faCheck} className="text-[#7c3aed] text-3xl" />
                 </div>
                 <h1 className="text-white text-xl my-4 font-bold">Randevu Sistemi</h1>
                 <p className="text-sm md:text-base text-[#888]">
@@ -209,6 +218,7 @@ const Packages = () => {
                 </p>
               </div>
 
+              {/* 4. KUTU (YEŞİL - DEĞİŞMEDİ) */}
               <div className="flex flex-col w-full md:w-1/4 items-center md:items-start text-center md:text-left">
                 <div className="w-16 h-16 bg-[#28412e] rounded-xl flex items-center justify-center">
                   <FontAwesomeIcon icon={faCheck} className="text-[#24c15d] text-3xl" />

@@ -59,9 +59,9 @@ const MemberAppointments = ({ onBack }) => {
   const pastApps = processedAppointments.filter(app => app.isPast);
 
   const AppointmentCard = ({ app, isPast }) => (
-    <div className={`w-full border rounded-2xl p-4 md:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-all ${isPast ? "bg-[#1a1a1a] border-[#2e2e2e] opacity-75" : "bg-[#1e1e1e] border-[#383737] hover:border-[#009fe2] shadow-lg"}`}>
+    <div className={`w-full border rounded-2xl p-4 md:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-all ${isPast ? "bg-[#1a1a1a] border-[#2e2e2e] opacity-75" : "bg-[#1e1e1e] border-[#383737] hover:border-[#7c3aed] shadow-lg"}`}>
       <div className="flex items-center gap-4 md:gap-6">
-        <div className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center text-xl md:text-2xl shrink-0 ${isPast ? "bg-[#252525] text-[#5b5b5b]" : app.type === 'salon' ? "bg-[#009fe2]/10 text-[#009fe2]" : "bg-[#22c55e]/10 text-[#22c55e]"}`}>
+        <div className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center text-xl md:text-2xl shrink-0 ${isPast ? "bg-[#252525] text-[#5b5b5b]" : app.type === 'salon' ? "bg-[#7c3aed]/10 text-[#7c3aed]" : "bg-[#22c55e]/10 text-[#22c55e]"}`}>
           <FontAwesomeIcon icon={app.type === 'salon' ? faDumbbell : faBuilding} />
         </div>
         <div className="flex flex-col gap-1">
@@ -85,7 +85,7 @@ const MemberAppointments = ({ onBack }) => {
       </button>
 
       <div className="flex items-center gap-4 mb-8 md:mb-10">
-        <div className="w-1 h-8 md:h-10 bg-[#009fe2] rounded-full"></div>
+        <div className="w-1 h-8 md:h-10 bg-[#7c3aed] rounded-full"></div>
         <h2 className="text-2xl md:text-4xl font-bold text-white">Randevularım</h2>
       </div>
 
@@ -95,9 +95,10 @@ const MemberAppointments = ({ onBack }) => {
         <>
           <div className="mb-12">
             <div className="flex items-center gap-3 mb-6">
-              <FontAwesomeIcon icon={faCalendar} className="text-[#009fe2] text-lg md:text-xl" />
+              <FontAwesomeIcon icon={faCalendar} className="text-[#7c3aed] text-lg md:text-xl" />
               <h3 className="text-xl md:text-2xl font-bold text-white">Yaklaşan Randevular</h3>
-              <span className="bg-[#185f80] text-[#009fe2] text-xs font-bold px-2 py-0.5 rounded-full">{upcomingApps.length}</span>
+              {/* DÜZELTME BURADA: bg-[#185f80] -> bg-[#7c3aed]/20 yapıldı */}
+              <span className="bg-[#7c3aed]/20 text-[#7c3aed] text-xs font-bold px-2 py-0.5 rounded-full">{upcomingApps.length}</span>
             </div>
             <div className="flex flex-col gap-4">
               {upcomingApps.length > 0 ? upcomingApps.map(app => <AppointmentCard key={app.id} app={app} isPast={false} />) : 

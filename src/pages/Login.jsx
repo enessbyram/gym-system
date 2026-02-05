@@ -3,18 +3,16 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import LoginForm from "../components/LoginForm"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDumbbell, faMedal, faShield, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faMedal, faShield, faUser } from "@fortawesome/free-solid-svg-icons";
+import logo from "../assets/logo.png"; 
 
 const Login = () => {
-  // Hangi giriş türünün seçildiğini tutan state
   const [selectedRole, setSelectedRole] = useState(null); 
-  // null = seçim yapılmadı, 'member', 'pt', 'admin'
 
-  // Seçime göre form verilerini tanımlıyoruz
   const renderForm = () => {
     switch (selectedRole) {
       case "member":
-        return <LoginForm title="Üye Girişi" themeColor="#009fe2" role="member" onBack={() => setSelectedRole(null)} />;
+        return <LoginForm title="Üye Girişi" themeColor="#7c3aed" role="member" onBack={() => setSelectedRole(null)} />;
       case "pt":
         return <LoginForm title="PT Girişi" themeColor="#22c55e" role="pt" onBack={() => setSelectedRole(null)} />;
       case "admin":
@@ -29,29 +27,25 @@ const Login = () => {
       <Header />
       <div className="bg-[#161515] mt-20 w-full min-h-screen flex flex-col items-center justify-center gap-6 py-10">
         
-        {/* Eğer bir rol seçilmediyse Kartları Göster */}
         {!selectedRole ? (
           <>
-            <div className="cursor-default flex items-center text-5xl gap-3 z-10 mb-8">
-              <FontAwesomeIcon
-                icon={faDumbbell}
-                className="text-[#009fe2] rotate-135"
+            <div className="z-10 cursor-default">
+              <img 
+                src={logo} 
+                alt="Lumex Consulting" 
+                className="h-60 md:h-70 object-contain drop-shadow-[0_0_15px_rgba(124,58,237,0.6)]" 
               />
-              <div className="flex items-center font-bold">
-                <span className="text-[#009fe2]">EA</span>
-                <span className="text-[#444] mx-2">|</span>
-                <span className="text-white">WellnessClub</span>
-              </div>
             </div>
+
             <p className="text-[#434242] text-xl mb-4">Lütfen giriş türünüzü seçiniz</p>
             
             <div className="flex flex-col md:flex-row gap-6">
-              {/* Üye Kartı */}
+              
               <div 
                 onClick={() => setSelectedRole("member")}
-                className="w-80 h-80 gap-4 bg-[#262525] border border-[#403f3f] hover:border-[#009fe2] shadow-lg shadow-black/30 rounded-lg flex flex-col items-center justify-center hover:scale-105 transition-transform cursor-pointer hover:drop-shadow hover:drop-shadow-[#009fe2]"
+                className="w-80 h-80 gap-4 bg-[#262525] border border-[#403f3f] hover:border-[#7c3aed] shadow-lg shadow-black/30 rounded-lg flex flex-col items-center justify-center hover:scale-105 transition-transform cursor-pointer hover:drop-shadow hover:drop-shadow-[#7c3aed]"
               >
-                <div className="w-20 h-20 bg-[#185f80] rounded-full text-[#009fe2] flex items-center justify-center">
+                <div className="w-20 h-20 bg-[#7c3aed]/20 rounded-full text-[#7c3aed] flex items-center justify-center">
                   <FontAwesomeIcon icon={faUser} className="text-4xl" />
                 </div>
                 <h1 className="text-white text-xl">Üye Girişi</h1>
@@ -60,7 +54,6 @@ const Login = () => {
                 </p>
               </div>
 
-              {/* PT Kartı */}
               <div 
                 onClick={() => setSelectedRole("pt")}
                 className="w-80 h-80 gap-4 bg-[#262525] border border-[#403f3f] hover:border-[#23994d] shadow-lg shadow-black/30 rounded-lg flex flex-col items-center justify-center hover:scale-105 transition-transform cursor-pointer hover:drop-shadow hover:drop-shadow-[#23994d]"
@@ -74,7 +67,6 @@ const Login = () => {
                 </p>
               </div>
 
-              {/* Admin Kartı */}
               <div 
                 onClick={() => setSelectedRole("admin")}
                 className="w-80 h-80 gap-4 bg-[#262525] border border-[#403f3f] hover:border-[#5b5b5b] shadow-lg shadow-black/30 rounded-lg flex flex-col items-center justify-center hover:scale-105 transition-transform cursor-pointer hover:drop-shadow hover:drop-shadow-[#5b5b5b]"
@@ -90,7 +82,6 @@ const Login = () => {
             </div>
           </>
         ) : (
-          /* Eğer rol seçildiyse Formu Göster */
           renderForm()
         )}
       </div>

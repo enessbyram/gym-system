@@ -59,7 +59,7 @@ const AdminAppointments = () => {
             <div className="bg-[#252525] p-4 md:p-5 border-b border-[#383737] flex justify-between items-center shrink-0">
               <div>
                 <h3 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
-                  <span className="text-[#009fe2] text-2xl md:text-3xl">{selectedDayInfo.day}</span> 
+                  <span className="text-[#7c3aed] text-2xl md:text-3xl">{selectedDayInfo.day}</span> 
                   {selectedDayInfo.month} {selectedDayInfo.year}
                 </h3>
                 <p className="text-[#888] text-xs md:text-sm mt-1">Toplam {selectedDayInfo.list.length} Randevu</p>
@@ -72,9 +72,9 @@ const AdminAppointments = () => {
             <div className="p-4 md:p-6 overflow-y-auto custom-scrollbar flex flex-col gap-3">
               {selectedDayInfo.list.length > 0 ? (
                 selectedDayInfo.list.map((app) => (
-                  <div key={app.id} className={`border p-3 md:p-4 rounded-xl flex items-center justify-between transition-all group ${app.type === 'salon' ? 'bg-[#009fe2]/5 border-[#009fe2]/30 hover:border-[#009fe2]' : 'bg-[#22c55e]/5 border-[#22c55e]/30 hover:border-[#22c55e]'}`}>
+                  <div key={app.id} className={`border p-3 md:p-4 rounded-xl flex items-center justify-between transition-all group ${app.type === 'salon' ? 'bg-[#7c3aed]/5 border-[#7c3aed]/30 hover:border-[#7c3aed]' : 'bg-[#22c55e]/5 border-[#22c55e]/30 hover:border-[#22c55e]'}`}>
                     <div className="flex items-center gap-3 md:gap-4">
-                      <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-base md:text-lg ${app.type === 'salon' ? 'bg-[#009fe2]/10 text-[#009fe2]' : 'bg-[#22c55e]/10 text-[#22c55e]'}`}>
+                      <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-base md:text-lg ${app.type === 'salon' ? 'bg-[#7c3aed]/10 text-[#7c3aed]' : 'bg-[#22c55e]/10 text-[#22c55e]'}`}>
                         <FontAwesomeIcon icon={app.type === 'salon' ? faDumbbell : faBuilding} />
                       </div>
                       <div>
@@ -84,7 +84,7 @@ const AdminAppointments = () => {
                         </div>
                       </div>
                     </div>
-                    <div className={`px-2 md:px-3 py-1 md:py-1.5 rounded-lg text-xs md:text-sm font-bold flex items-center gap-2 ${app.type === 'salon' ? 'bg-[#009fe2] text-white' : 'bg-[#22c55e] text-white'}`}>
+                    <div className={`px-2 md:px-3 py-1 md:py-1.5 rounded-lg text-xs md:text-sm font-bold flex items-center gap-2 ${app.type === 'salon' ? 'bg-[#7c3aed] text-white' : 'bg-[#22c55e] text-white'}`}>
                       <FontAwesomeIcon icon={faClock} /> {app.time}
                     </div>
                   </div>
@@ -107,8 +107,8 @@ const AdminAppointments = () => {
       <div className="flex justify-between items-center mb-6 md:mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-white">{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}</h2>
         <div className="flex gap-2">
-          <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))} className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#2e2e2e] text-white hover:bg-[#009fe2] border border-[#383737] flex items-center justify-center text-sm md:text-base"><FontAwesomeIcon icon={faChevronLeft} /></button>
-          <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))} className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#2e2e2e] text-white hover:bg-[#009fe2] border border-[#383737] flex items-center justify-center text-sm md:text-base"><FontAwesomeIcon icon={faChevronRight} /></button>
+          <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))} className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#2e2e2e] text-white hover:bg-[#7c3aed] border border-[#383737] flex items-center justify-center text-sm md:text-base"><FontAwesomeIcon icon={faChevronLeft} /></button>
+          <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))} className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#2e2e2e] text-white hover:bg-[#7c3aed] border border-[#383737] flex items-center justify-center text-sm md:text-base"><FontAwesomeIcon icon={faChevronRight} /></button>
         </div>
       </div>
 
@@ -132,17 +132,17 @@ const AdminAppointments = () => {
               onClick={() => handleDayClick(dayNumber, daysAppointments)}
               className={`
                 relative min-h-20 md:min-h-30 rounded-xl md:rounded-2xl border p-1 md:p-3 flex flex-col gap-1 md:gap-2 transition-all cursor-pointer group
-                ${isToday ? 'bg-[#009fe2]/5 border-[#009fe2]' : 'bg-[#161515] border-[#2e2e2e] hover:border-[#5b5b5b] hover:bg-[#1f1f1f]'}
+                ${isToday ? 'bg-[#7c3aed]/5 border-[#7c3aed]' : 'bg-[#161515] border-[#2e2e2e] hover:border-[#5b5b5b] hover:bg-[#1f1f1f]'}
               `}
             >
               <div className="flex justify-between items-start">
-                <span className={`text-sm md:text-xl font-bold ${isToday ? 'text-[#009fe2]' : 'text-[#5b5b5b]'}`}>{dayNumber}</span>
+                <span className={`text-sm md:text-xl font-bold ${isToday ? 'text-[#7c3aed]' : 'text-[#5b5b5b]'}`}>{dayNumber}</span>
                 {daysAppointments.length > 0 && <span className="bg-[#333] text-[#bbb] text-[8px] md:text-[10px] px-1.5 py-0.5 rounded-md">{daysAppointments.length}</span>}
               </div>
 
               <div className="flex flex-col gap-1 overflow-hidden">
                 {daysAppointments.slice(0, 3).map((app) => (
-                  <div key={app.id} className={`text-white text-[8px] md:text-xs px-1 md:px-2 py-0.5 md:py-1 rounded-md shadow-sm truncate font-medium ${app.type === 'salon' ? 'bg-[#009fe2]' : 'bg-[#22c55e]'}`} title={`${app.time} - ${app.member}`}>
+                  <div key={app.id} className={`text-white text-[8px] md:text-xs px-1 md:px-2 py-0.5 md:py-1 rounded-md shadow-sm truncate font-medium ${app.type === 'salon' ? 'bg-[#7c3aed]' : 'bg-[#22c55e]'}`} title={`${app.time} - ${app.member}`}>
                     <span className="hidden md:inline">{app.time}</span> {app.member.split(" ")[0]}
                   </div>
                 ))}

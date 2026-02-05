@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { 
-  faPlus, faEdit, faHistory, faTimes
+  faPlus, faHistory, faTimes
 } from "@fortawesome/free-solid-svg-icons";
 
 const AdminMembers = () => {
@@ -9,6 +9,7 @@ const AdminMembers = () => {
   const [selectedMember, setSelectedMember] = useState(null);
   const [members, setMembers] = useState([]); 
   const [packages, setPackages] = useState([]);
+  const [pts, setPts] = useState([]); // YENİ: PT Listesi için state
 
   const [formData, setFormData] = useState({
     id: null,
@@ -17,6 +18,7 @@ const AdminMembers = () => {
     phone: "",
     password: "",
     packageId: "",
+    ptId: "", // YENİ: Seçilen PT'nin ID'si
     startDate: "",
     extraDays: "", 
     extraSessions: ""
@@ -24,25 +26,33 @@ const AdminMembers = () => {
 
   const fetchData = async () => {
     try {
+      // 1. Üyeleri Çek
       const memRes = await fetch("/api/members.php");
       const memData = await memRes.json();
-
       if (Array.isArray(memData)) {
         setMembers(memData);
       } else {
         setMembers([]); 
       }
 
+      // 2. Paketleri Çek
       const pkgRes = await fetch("/api/packages.php");
       const pkgData = await pkgRes.json();
-      
       if (Array.isArray(pkgData)) {
         setPackages(pkgData);
       }
 
+      // 3. PT'leri Çek (YENİ KISIM)
+      // Sistemin user tablosundan role='pt' olanları çeken bir endpoint
+      const ptRes = await fetch("/api/users.php?role=pt"); 
+      const ptData = await ptRes.json();
+      if (Array.isArray(ptData)) {
+        setPts(ptData);
+      }
+
     } catch (error) {
       console.error("Veri çekme hatası:", error);
-      setMembers([]);
+      setMembers([]); // Hata durumunda boş dizi ata
     }
   };
 
@@ -55,6 +65,11 @@ const AdminMembers = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  // Seçilen paketin 'pt' paketi olup olmadığını kontrol ediyoruz
+  // (Form verisindeki packageId ile paketler listesindeki id eşleşiyor mu?)
+  const selectedPackage = packages.find(p => p.id == formData.packageId);
+  const isPtPackage = selectedPackage && selectedPackage.type === 'pt';
+
   const openModal = (type, member = null) => {
     setActiveModal(type);
     setSelectedMember(member);
@@ -62,7 +77,8 @@ const AdminMembers = () => {
     if (type === 'add') {
       setFormData({ 
         id: null, name: "", email: "", phone: "", password: "", 
-        packageId: "", startDate: new Date().toISOString().split('T')[0], 
+        packageId: "", ptId: "", // Sıfırla
+        startDate: new Date().toISOString().split('T')[0], 
         extraDays: "", extraSessions: "" 
       });
     } else if (member) {
@@ -70,6 +86,7 @@ const AdminMembers = () => {
         ...member,
         password: "", 
         packageId: member.packageId || "",
+        ptId: member.ptId || "", // Mevcut PT varsa getir
         extraDays: "",
         extraSessions: ""
       });
@@ -134,6 +151,7 @@ const AdminMembers = () => {
               <th className="p-3 md:p-5 font-medium">Ad Soyad</th>
               <th className="p-3 md:p-5 font-medium hidden lg:table-cell">E-posta</th>
               <th className="p-3 md:p-5 font-medium">Üyelik</th>
+              <th className="p-3 md:p-5 font-medium text-center">PT</th> {/* YENİ SÜTUN */}
               <th className="p-3 md:p-5 font-medium text-center">Kalan Gün</th>
               <th className="p-3 md:p-5 font-medium text-center">PT Dersi</th>
               <th className="p-3 md:p-5 font-medium text-center">Durum</th>
@@ -146,7 +164,11 @@ const AdminMembers = () => {
                 <tr key={member.id} className="hover:bg-[#222] transition-colors group">
                   <td className="p-3 md:p-5 text-white font-medium text-sm md:text-base">{member.name}</td>
                   <td className="p-3 md:p-5 text-[#5b5b5b] text-sm hidden lg:table-cell">{member.email}</td>
-                  <td className="p-3 md:p-5 text-[#009fe2] text-sm md:text-base">{member.package}</td>
+                  <td className="p-3 md:p-5 text-[#7c3aed] text-sm md:text-base">{member.package}</td>
+                  {/* PT İSMİ GÖSTERİMİ */}
+                  <td className="p-3 md:p-5 text-center text-[#22c55e] font-medium text-sm">
+                    {member.pt_name || "-"}
+                  </td>
                   <td className="p-3 md:p-5 text-center text-white font-bold text-sm md:text-base">{member.remainingDays} gün</td>
                   <td className={`p-3 md:p-5 text-center font-bold text-sm md:text-base ${Number(member.remainingSessions) > 0 ? 'text-[#22c55e]' : 'text-[#5b5b5b]'}`}>
                     {member.remainingSessions}
@@ -159,7 +181,7 @@ const AdminMembers = () => {
                   
                   <td className="p-3 md:p-5 flex flex-col items-end gap-2">
                     <div className="flex gap-2">
-                      <button onClick={() => openModal('edit', member)} className="bg-[#009fe2] hover:bg-[#007bbd] text-white cursor-pointer w-20 md:min-w-24 px-2 md:px-3 py-1.5 rounded-lg text-[10px] md:text-xs font-bold transition-colors">
+                      <button onClick={() => openModal('edit', member)} className="bg-[#7c3aed] hover:bg-[#7c3aed] text-white cursor-pointer w-20 md:min-w-24 px-2 md:px-3 py-1.5 rounded-lg text-[10px] md:text-xs font-bold transition-colors">
                         Düzenle
                       </button>
                       <button onClick={() => openModal('history', member)} className="bg-[#635a4a] hover:bg-[#7a705e] cursor-pointer w-20 md:min-w-24 text-[#d6cbb6] px-2 md:px-3 py-1.5 rounded-lg text-[10px] md:text-xs font-bold transition-colors flex items-center justify-center gap-1">
@@ -186,7 +208,7 @@ const AdminMembers = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="7" className="p-8 text-center text-[#555]">
+                <td colSpan="8" className="p-8 text-center text-[#555]">
                   {Array.isArray(members) ? "Henüz üye kaydı bulunmamaktadır." : "Veri yüklenirken bir sorun oluştu."}
                 </td>
               </tr>
@@ -204,21 +226,40 @@ const AdminMembers = () => {
             </div>
             <form onSubmit={(e) => handleAction(e, 'save')} className="flex flex-col gap-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="Ad Soyad" className="bg-[#2e2e2e] border border-[#3e3e3e] text-white rounded-xl p-3 outline-none focus:border-[#009fe2]" required />
-                <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="E-posta" className="bg-[#2e2e2e] border border-[#3e3e3e] text-white rounded-xl p-3 outline-none focus:border-[#009fe2]" required />
+                <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="Ad Soyad" className="bg-[#2e2e2e] border border-[#3e3e3e] text-white rounded-xl p-3 outline-none focus:border-[#7c3aed]" required />
+                <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="E-posta" className="bg-[#2e2e2e] border border-[#3e3e3e] text-white rounded-xl p-3 outline-none focus:border-[#7c3aed]" required />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input type="password" name="password" value={formData.password} onChange={handleInputChange} placeholder="Şifre" className="bg-[#2e2e2e] border border-[#3e3e3e] text-white rounded-xl p-3 outline-none focus:border-[#009fe2]" />
-                <input type="text" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="Telefon" className="bg-[#2e2e2e] border border-[#3e3e3e] text-white rounded-xl p-3 outline-none focus:border-[#009fe2]" />
+                <input type="password" name="password" value={formData.password} onChange={handleInputChange} placeholder="Şifre" className="bg-[#2e2e2e] border border-[#3e3e3e] text-white rounded-xl p-3 outline-none focus:border-[#7c3aed]" />
+                <input type="text" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="Telefon" className="bg-[#2e2e2e] border border-[#3e3e3e] text-white rounded-xl p-3 outline-none focus:border-[#7c3aed]" />
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <select name="packageId" value={formData.packageId} onChange={handleInputChange} className="bg-[#2e2e2e] border border-[#3e3e3e] text-white rounded-xl p-3 outline-none focus:border-[#009fe2]">
+                <select name="packageId" value={formData.packageId} onChange={handleInputChange} className="bg-[#2e2e2e] border border-[#3e3e3e] text-white rounded-xl p-3 outline-none focus:border-[#7c3aed]">
                   <option value="">Paket Seçiniz</option>
                   {Array.isArray(packages) && packages.map(p => <option key={p.id} value={p.id}>{p.title}</option>)}
                 </select>
-                <input type="date" name="startDate" value={formData.startDate} onChange={handleInputChange} className="bg-[#2e2e2e] border border-[#3e3e3e] text-[#888] rounded-xl p-3 outline-none focus:border-[#009fe2]" />
+                <input type="date" name="startDate" value={formData.startDate} onChange={handleInputChange} className="bg-[#2e2e2e] border border-[#3e3e3e] text-[#888] rounded-xl p-3 outline-none focus:border-[#7c3aed]" />
               </div>
+
+              {/* --- YENİ EKLENEN KISIM: PT SEÇİMİ --- */}
+              {/* Eğer seçilen paketin tipi 'pt' ise bu dropdown gözükür */}
+              {isPtPackage && (
+                <div className="w-full animate-fade-in">
+                  <label className="text-[#888] text-sm ml-2 mb-1 block">Eğitmen (PT) Seçiniz</label>
+                  <select 
+                    name="ptId" 
+                    value={formData.ptId} 
+                    onChange={handleInputChange} 
+                    className="w-full bg-[#1a2e22] border border-[#22c55e] text-white rounded-xl p-3 outline-none focus:shadow-[0_0_15px_rgba(34,197,94,0.3)]"
+                  >
+                    <option value="">PT Seçiniz</option>
+                    {Array.isArray(pts) && pts.map(pt => (
+                      <option key={pt.id} value={pt.id}>{pt.name}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
               <div className="flex gap-3 mt-4 pt-4 border-t border-[#333]">
                 <button type="submit" className="flex-1 bg-[#22c55e] hover:bg-[#1ea84f] text-white cursor-pointer py-3 rounded-xl font-bold">{activeModal === 'add' ? 'Üye Ekle' : 'Kaydet'}</button>
@@ -232,7 +273,6 @@ const AdminMembers = () => {
       {activeModal === 'history' && selectedMember && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
           <div className="bg-[#1e1e1e] border border-[#383737] w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-             
              <div className="flex justify-between items-center p-4 md:p-6 border-b border-[#333]">
               <h3 className="text-lg md:text-xl font-bold text-white flex items-center gap-2">
                 <FontAwesomeIcon icon={faHistory} className="text-[#888]" /> 
@@ -247,7 +287,7 @@ const AdminMembers = () => {
                  <div className="flex justify-between items-start mb-4">
                     <div>
                         <h4 className="text-white text-base md:text-lg font-bold">{selectedMember.package}</h4>
-                        <p className="text-[#009fe2] font-bold text-lg md:text-xl mt-1">
+                        <p className="text-[#7c3aed] font-bold text-lg md:text-xl mt-1">
                             {packages.find(p => p.id === selectedMember.packageId)?.price 
                                 ? Number(packages.find(p => p.id === selectedMember.packageId).price).toLocaleString() + '₺' 
                                 : ''}
@@ -279,7 +319,7 @@ const AdminMembers = () => {
                     <div className="flex justify-between items-start mb-4">
                         <div>
                             <h4 className="text-[#ccc] text-base md:text-lg font-bold">{h.title}</h4>
-                            <p className="text-[#009fe2] font-bold text-lg md:text-xl mt-1">{Number(h.price).toLocaleString()}₺</p>
+                            <p className="text-[#7c3aed] font-bold text-lg md:text-xl mt-1">{Number(h.price).toLocaleString()}₺</p>
                         </div>
                         <span className="bg-[#333] text-[#888] border border-[#444] px-2 md:px-3 py-1 rounded-full text-xs font-bold">
                             Geçmiş Paket
@@ -330,7 +370,7 @@ const AdminMembers = () => {
                   name={activeModal === 'addDays' ? 'extraDays' : 'extraSessions'}
                   value={activeModal === 'addDays' ? formData.extraDays : formData.extraSessions}
                   onChange={handleInputChange}
-                  className="bg-[#252525] border border-[#009fe2] text-white text-center text-2xl font-bold rounded-xl p-4 outline-none focus:shadow-[0_0_15px_rgba(0,159,226,0.3)] transition-all"
+                  className="bg-[#252525] border border-[#7c3aed] text-white text-center text-2xl font-bold rounded-xl p-4 outline-none focus:shadow-[0_0_15px_rgba(0,159,226,0.3)] transition-all"
                   placeholder="0"
                   autoFocus
                   required
@@ -338,7 +378,7 @@ const AdminMembers = () => {
                 
                 <div className="flex gap-2">
                   <button type="button" onClick={() => setActiveModal(null)} className="flex-1 cursor-pointer bg-[#333] text-white py-2 rounded-xl font-bold hover:bg-[#444]">İptal</button>
-                  <button type="submit" className="flex-1 bg-[#009fe2] text-white py-2 cursor-pointer rounded-xl font-bold hover:bg-[#007bbd]">Tamam</button>
+                  <button type="submit" className="flex-1 bg-[#7c3aed] text-white py-2 cursor-pointer rounded-xl font-bold hover:bg-[#7c3aed]">Tamam</button>
                 </div>
              </form>
           </div>

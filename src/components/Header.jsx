@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDumbbell, faSignOutAlt, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faSignOutAlt, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import logo from "../assets/logo.png"; // Logoyu import ettik
 
 const Header = () => {
   const { user, logout } = useAuth();
@@ -28,18 +29,13 @@ const Header = () => {
     <header className="flex w-full h-20 bg-[#1a1a1a] justify-center fixed top-0 z-50 border-b border-[#303030]">
       <div className="container h-full px-4 flex justify-between items-center relative">
         
-        <Link to={logoLink} className="logo-part group flex flex-row items-center gap-2 cursor-pointer font-bold z-50">
-          <FontAwesomeIcon
-            icon={faDumbbell}
-            size="2x"
-            color="#009fe2"
-            className="rotate-135 drop-shadow-[0_0_5px_rgba(0,159,226,0.5)] transition-all duration-300 group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(0,159,226,0.9)]"
+        {/* LOGO KISMI GÜNCELLENDİ */}
+        <Link to={logoLink} className="logo-part group flex flex-row items-center cursor-pointer z-50">
+          <img 
+            src={logo} 
+            alt="Lumex Consulting" 
+            className="h-30 md:h-24 object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_0_5px_rgba(124,58,237,0.5)]" 
           />
-          <div className="flex items-center text-lg md:text-xl"> 
-            <h1 className="text-[#009fe2]">EA</h1>
-            <h1 className="text-[#535454] mx-1">|</h1>
-            <h1 className="text-[#ffffff]">WellnessClub</h1>
-          </div>
         </Link>
         
         <button 
@@ -52,11 +48,16 @@ const Header = () => {
         <nav className="hidden md:flex justify-between text-white gap-8 items-center">
           {!user ? (
             <>
-              <Link to="/" className="cursor-pointer hover:text-[#009fe2] transition-all">Ana Sayfa</Link>
-              <Link to="/products" className="cursor-pointer hover:text-[#009fe2] transition-all">Ürünler</Link>
-              <Link to="/packages" className="cursor-pointer hover:text-[#009fe2] transition-all">Paketler</Link>
-              <Link to="/contact" className="cursor-pointer hover:text-[#009fe2] transition-all">İletişim</Link>
-              <Link to="/login" className="bg-[#009fe2] text-white px-6 py-1 rounded-xl cursor-pointer drop-shadow-[0_0_5px_rgba(0,159,226,0.5)] hover:bg-[#007bbd] transition-colors duration-300">Randevu Sistemi</Link>
+              {/* Hover renkleri Mor (#7c3aed) yapıldı */}
+              <Link to="/" className="cursor-pointer hover:text-[#7c3aed] transition-all">Ana Sayfa</Link>
+              <Link to="/products" className="cursor-pointer hover:text-[#7c3aed] transition-all">Ürünler</Link>
+              <Link to="/packages" className="cursor-pointer hover:text-[#7c3aed] transition-all">Paketler</Link>
+              <Link to="/contact" className="cursor-pointer hover:text-[#7c3aed] transition-all">İletişim</Link>
+              
+              {/* Buton Mor Yapıldı */}
+              <Link to="/login" className="bg-[#7c3aed] text-white px-6 py-1 rounded-xl cursor-pointer drop-shadow-[0_0_5px_rgba(124,58,237,0.5)] hover:bg-[#6d28d9] transition-colors duration-300">
+                Randevu Sistemi
+              </Link>
             </>
           ) : (
             <div className="flex items-center gap-4">
@@ -72,6 +73,7 @@ const Header = () => {
           )}
         </nav>
 
+        {/* MOBİL MENÜ */}
         <div 
           className={`
             absolute top-0 left-0 w-full bg-[#1a1a1a] border-b border-[#303030] shadow-2xl 
@@ -83,22 +85,22 @@ const Header = () => {
         >
            {!user ? (
             <>
-              <Link to="/" onClick={() => setIsMenuOpen(false)} className="text-white text-lg font-medium hover:text-[#009fe2]">Ana Sayfa</Link>
-              <Link to="/products" onClick={() => setIsMenuOpen(false)} className="text-white text-lg font-medium hover:text-[#009fe2]">Ürünler</Link>
-              <Link to="/packages" onClick={() => setIsMenuOpen(false)} className="text-white text-lg font-medium hover:text-[#009fe2]">Paketler</Link>
-              <Link to="/contact" onClick={() => setIsMenuOpen(false)} className="text-white text-lg font-medium hover:text-[#009fe2]">İletişim</Link>
+              <Link to="/" onClick={() => setIsMenuOpen(false)} className="text-white text-lg font-medium hover:text-[#7c3aed]">Ana Sayfa</Link>
+              <Link to="/products" onClick={() => setIsMenuOpen(false)} className="text-white text-lg font-medium hover:text-[#7c3aed]">Ürünler</Link>
+              <Link to="/packages" onClick={() => setIsMenuOpen(false)} className="text-white text-lg font-medium hover:text-[#7c3aed]">Paketler</Link>
+              <Link to="/contact" onClick={() => setIsMenuOpen(false)} className="text-white text-lg font-medium hover:text-[#7c3aed]">İletişim</Link>
               
-              <div className="w-full h-px bg-[#303030]"></div> {/* Ayırıcı Çizgi */}
+              <div className="w-full h-px bg-[#303030]"></div> 
               
-              <Link to="/login" onClick={() => setIsMenuOpen(false)} className="bg-[#009fe2] text-white px-8 py-3 rounded-xl font-bold hover:bg-[#007bbd]">
+              <Link to="/login" onClick={() => setIsMenuOpen(false)} className="bg-[#7c3aed] text-white px-8 py-3 rounded-xl font-bold hover:bg-[#6d28d9]">
                 Randevu Sistemi
               </Link>
             </>
           ) : (
             <div className="flex flex-col items-center gap-6 w-full">
-               <span className="text-[#009fe2] font-bold text-lg">Hoşgeldin, {user.name}</span>
+               <span className="text-[#7c3aed] font-bold text-lg">Hoşgeldin, {user.name}</span>
                
-               <div className="w-full h-px bg-[#303030]"></div> {/* Ayırıcı Çizgi */}
+               <div className="w-full h-px bg-[#303030]"></div>
 
                <button 
                 onClick={() => { logout(); setIsMenuOpen(false); }}

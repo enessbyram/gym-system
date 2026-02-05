@@ -11,10 +11,12 @@ import { AuthProvider } from "./context/AuthContext";
 import AdminDashboard from "./pages/AdminDashboard";
 import PTDashboard from "./pages/PTDashboard";
 import MemberDashboard from "./pages/MemberDashboard";
+import ScrollToTop from "./components/ScrollToUp"; 
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
+      <ScrollToTop />
       <AuthProvider>
         <Routes>
           <Route path="/" element={<App />} />

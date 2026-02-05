@@ -25,11 +25,12 @@ const Contact = () => {
           
           <div className="flex flex-col gap-4 w-full md:w-1/2">
             
-            <div className="flex flex-row gap-4 border border-[#383737] rounded-2xl bg-[#222121] hover:border-[#1786ba] w-full p-6 transition-all duration-500">
-              <div className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-[#243a47] rounded-xl shrink-0">
+            {/* ADRES KUTUSU (MOR) */}
+            <div className="flex flex-row gap-4 border border-[#383737] rounded-2xl bg-[#222121] hover:border-[#7c3aed] w-full p-6 transition-all duration-500">
+              <div className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-[#7c3aed]/20 rounded-xl shrink-0">
                 <FontAwesomeIcon
                   icon={faLocation}
-                  className="text-[#1786ba] text-lg md:text-xl"
+                  className="text-[#7c3aed] text-lg md:text-xl"
                 />
               </div>
               <div className="flex flex-col gap-1">
@@ -39,12 +40,13 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-between border border-[#383737] rounded-2xl bg-[#222121] hover:border-[#1786ba] w-full p-6 transition-all duration-500">
+            {/* TELEFON KUTUSU (MOR) */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-between border border-[#383737] rounded-2xl bg-[#222121] hover:border-[#7c3aed] w-full p-6 transition-all duration-500">
               <div className="flex flex-row gap-4">
-                <div className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-[#243a47] rounded-xl shrink-0">
+                <div className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-[#7c3aed]/20 rounded-xl shrink-0">
                   <FontAwesomeIcon
                     icon={faPhone}
-                    className="text-[#1786ba] text-lg md:text-xl"
+                    className="text-[#7c3aed] text-lg md:text-xl"
                   />
                 </div>
                 <div className="flex flex-col gap-1">
@@ -52,11 +54,12 @@ const Contact = () => {
                   <p className="text-[#5b5b5b] text-sm md:text-base">+90 555 123 45 67</p>
                 </div>
               </div>
-              <div className="bg-[#039ee1] text-white text-sm md:text-lg rounded-xl px-4 py-2 cursor-pointer hover:bg-[#1786ba] transition-all duration-300 self-start sm:self-center text-center drop-shadow shadow-[#039ee1]/50">
+              <div className="bg-[#7c3aed] text-white text-sm md:text-lg rounded-xl px-4 py-2 cursor-pointer hover:bg-[#6d28d9] transition-all duration-300 self-start sm:self-center text-center drop-shadow shadow-[#7c3aed]/50">
                 Hemen Ara
               </div>
             </div>
 
+            {/* E-POSTA KUTUSU (YEŞİL - Aynen Bırakıldı, sadece mail değişti) */}
             <div className="flex flex-row gap-4 border border-[#383737] rounded-2xl bg-[#222121] hover:border-[#22c55e] w-full p-6 transition-all duration-500">
               <div className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-[#264931] rounded-xl shrink-0">
                 <FontAwesomeIcon
@@ -66,28 +69,30 @@ const Contact = () => {
               </div>
               <div className="flex flex-col gap-1">
                 <h2 className="text-white text-lg md:text-xl">E-posta</h2>
-                <p className="text-[#5b5b5b] text-sm md:text-base">info@eagym.com</p>
+                <p className="text-[#5b5b5b] text-sm md:text-base">info@lumexconsulting.com</p>
               </div>
             </div>
 
-            <div className="flex flex-row gap-4 border border-[#383737] rounded-2xl bg-[#222121] hover:border-[#1786ba] w-full p-6 transition-all duration-500">
-              <div className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-[#243a47] rounded-xl shrink-0">
+            {/* INSTAGRAM KUTUSU (MOR) */}
+            <div className="flex flex-row gap-4 border border-[#383737] rounded-2xl bg-[#222121] hover:border-[#7c3aed] w-full p-6 transition-all duration-500">
+              <div className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-[#7c3aed]/20 rounded-xl shrink-0">
                 <FontAwesomeIcon
                   icon={faLocation}
-                  className="text-[#1786ba] text-lg md:text-xl"
+                  className="text-[#7c3aed] text-lg md:text-xl"
                 />
               </div>
               <div className="flex flex-col gap-1">
                 <h2 className="text-white text-lg md:text-xl">Instagram</h2>
-                <p className="text-[#5b5b5b] text-sm md:text-base">@eawellnessclub</p>
+                <p className="text-[#5b5b5b] text-sm md:text-base">@lumexconsulting</p>
               </div>
             </div>
 
-            <div className="flex flex-row gap-4 border border-[#383737] rounded-2xl bg-[#222121] hover:border-[#1786ba] w-full p-6 transition-all duration-500">
-              <div className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-[#243a47] rounded-xl shrink-0">
+            {/* ÇALIŞMA SAATLERİ (MOR) */}
+            <div className="flex flex-row gap-4 border border-[#383737] rounded-2xl bg-[#222121] hover:border-[#7c3aed] w-full p-6 transition-all duration-500">
+              <div className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-[#7c3aed]/20 rounded-xl shrink-0">
                 <FontAwesomeIcon
                   icon={faClock}
-                  className="text-[#1786ba] text-lg md:text-xl"
+                  className="text-[#7c3aed] text-lg md:text-xl"
                 />
               </div>
               <div className="flex flex-col gap-2 w-full">

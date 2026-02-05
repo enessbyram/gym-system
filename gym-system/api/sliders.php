@@ -1,10 +1,10 @@
 <?php
-// Hataları göster
+// Hataları göster (Canlıda kapatılabilir ama şimdilik kalsın)
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// CORS
+// CORS Ayarları
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
@@ -43,9 +43,12 @@ function handleGet($pdo) {
         $data = array_map(function($item) {
             return [
                 'id' => $item['id'],
-                // Frontend 'image' bekliyor, biz tam URL döndürelim
-                'image' => "http://localhost/gym-system/uploads/" . $item['image_path'],
-                'alt' => $item['title'] // Alt metin olarak veritabanındaki title'ı kullanalım
+                // --- DÜZELTME BURADA YAPILDI ---
+                // Eski Hatalı Kod: 'image' => "http://localhost/gym-system/uploads/" . $item['image_path'],
+                // Yeni Kod: Sadece dosya ismini gönderiyoruz (örn: slider_123.jpg)
+                // React tarafı bunun başına otomatik yol ekleyecek.
+                'image' => $item['image_path'], 
+                'alt' => $item['title']
             ];
         }, $sliders);
 
@@ -59,10 +62,16 @@ function handleGet($pdo) {
 function handlePost($pdo) {
     $imagePath = null;
 
-    // Dosya Yükleme
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        // Not: uploads klasörü api klasörünün bir üstünde ise '../uploads/' doğrudur.
+        // Ancak sunucu yapına göre 'uploads/' da olabilir. Genelde '../uploads/' mantıklıdır.
         $uploadDir = '../uploads/';
         
+        // Klasör yoksa oluştur (Garanti olsun)
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
         $fileInfo = pathinfo($_FILES['image']['name']);
         $extension = strtolower($fileInfo['extension']);
         $allowedTypes = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
@@ -87,7 +96,6 @@ function handlePost($pdo) {
     }
 
     try {
-        // Varsayılan değerlerle kayıt (Frontend'de title inputu olmadığı için)
         $title = "Slider Görseli";
         $item_order = 0;
         $is_active = 1;
@@ -113,7 +121,6 @@ function handleDelete($pdo) {
     }
 
     try {
-        // Önce dosyayı sil
         $stmt = $pdo->prepare("SELECT image_path FROM sliders WHERE id = ?");
         $stmt->execute([$id]);
         $slider = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -125,7 +132,6 @@ function handleDelete($pdo) {
             }
         }
 
-        // Sonra kaydı sil
         $del = $pdo->prepare("DELETE FROM sliders WHERE id = ?");
         $del->execute([$id]);
 

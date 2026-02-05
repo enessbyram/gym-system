@@ -1,4 +1,5 @@
 <?php
+// api/members.php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -24,26 +25,25 @@ switch ($method) {
     case 'POST':
         handlePost($pdo);
         break;
-    case 'DELETE':
-        handleDelete($pdo);
-        break;
     default:
         echo json_encode(["message" => "Geçersiz metod"]);
         break;
 }
 
-// --- 1. GET ---
+// --- 1. GET (Üyeleri Listele) ---
 function handleGet($pdo) {
     try {
         $sql = "
             SELECT 
                 u.id, CONCAT(u.name, ' ', u.surname) as full_name, u.email, u.phone, u.status,
                 m.id as membership_id, m.start_date, m.end_date, 
-                m.remaining_sessions, m.purchase_price, -- purchase_price eklendi
-                p.id as package_id, p.title as package_title, p.price as current_package_price, p.type
+                m.remaining_sessions, m.purchase_price, m.assigned_pt_id,
+                p.id as package_id, p.title as package_title, p.price as current_package_price, p.type,
+                CONCAT(pt.name, ' ', pt.surname) as pt_name
             FROM users u
             LEFT JOIN memberships m ON u.id = m.user_id AND m.status = 'active'
             LEFT JOIN packages p ON m.package_id = p.id
+            LEFT JOIN users pt ON m.assigned_pt_id = pt.id 
             WHERE u.role = 'member' 
             ORDER BY u.id DESC
         ";
@@ -53,7 +53,7 @@ function handleGet($pdo) {
 
         $formattedUsers = array_map(function($user) use ($pdo) {
             
-            // GEÇMİŞ SORGUSU GÜNCELLENDİ: Fiyat artık üyelik tablosundan (purchase_price) geliyor
+            // Geçmiş paketleri çek
             $historyStmt = $pdo->prepare("
                 SELECT p.title, m.purchase_price as price, m.start_date as start, m.end_date as end
                 FROM memberships m
@@ -64,7 +64,7 @@ function handleGet($pdo) {
             $historyStmt->execute([$user['id']]);
             $history = $historyStmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Kalan Gün
+            // Kalan Gün Hesabı
             $remainingDays = 0;
             if ($user['end_date']) {
                 $today = new DateTime();
@@ -83,7 +83,8 @@ function handleGet($pdo) {
                 'status' => $user['status'] == 1 ? 'Aktif' : 'Pasif',
                 'package' => $user['package_title'] ?? 'Paket Yok',
                 'packageId' => $user['package_id'],
-                // Eğer aktif paket varsa onun satın alındığı fiyatı göster, yoksa 0
+                'pt_name' => $user['pt_name'], 
+                'ptId' => $user['assigned_pt_id'], // Frontend'e seçili PT'yi gönderiyoruz
                 'price' => $user['purchase_price'] ? $user['purchase_price'] : ($user['current_package_price'] ?? 0),
                 'remainingDays' => $remainingDays,
                 'remainingSessions' => $user['remaining_sessions'] ?? 0,
@@ -99,14 +100,16 @@ function handleGet($pdo) {
     }
 }
 
-// --- 2. POST ---
+// --- 2. POST (Ekle/Güncelle) ---
 function handlePost($pdo) {
     $data = json_decode(file_get_contents("php://input"), true);
     $action = $data['action'] ?? 'save';
 
     try {
+        // Durum Değiştir (Aktif/Pasif)
         if ($action === 'toggle_status') {
             $id = $data['id'];
+            // Frontend 'Aktif' gönderiyorsa veritabanına 0 (Pasif) yaz, değilse 1 (Aktif) yaz.
             $newStatus = $data['status'] === 'Aktif' ? 0 : 1;
             $stmt = $pdo->prepare("UPDATE users SET status = ? WHERE id = ?");
             $stmt->execute([$newStatus, $id]);
@@ -141,8 +144,9 @@ function handlePost($pdo) {
             return;
         }
 
-        // --- KAYIT / GÜNCELLEME ---
+        // --- KAYIT / GÜNCELLEME İŞLEMİ ---
         $fullName = trim($data['name']);
+        
         $parts = explode(' ', $fullName);
         if (count($parts) > 1) {
             $surname = array_pop($parts);
@@ -156,13 +160,19 @@ function handlePost($pdo) {
         $phone = $data['phone'];
         $password = $data['password'] ?? '123456';
         $packageId = $data['packageId'];
+        
+        // PT ID'sini al (Boşsa NULL yap)
+        $ptId = !empty($data['ptId']) ? $data['ptId'] : null;
+        
         $startDate = $data['startDate'] ?: date('Y-m-d');
         $id = $data['id'] ?? null;
 
         $pdo->beginTransaction();
 
         if ($id) {
-            // GÜNCELLEME
+            // --- GÜNCELLEME (UPDATE) ---
+            
+            // 1. Kullanıcı bilgilerini güncelle
             $sql = "UPDATE users SET name=?, surname=?, email=?, phone=? WHERE id=?";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$name, $surname, $email, $phone, $id]);
@@ -170,15 +180,29 @@ function handlePost($pdo) {
             if (!empty($data['password'])) {
                 $pdo->prepare("UPDATE users SET password=? WHERE id=?")->execute([$data['password'], $id]);
             }
-            // NOT: Burada paket değişikliği senaryosu eklenmedi, sadece kullanıcı bilgileri güncelleniyor.
+            
+            // 2. Üyelik Bilgilerini (PT Dahil) Güncelle
+            // Eğer paket seçilmişse, paketi ve PT'yi güncelle
+            // Eğer paket seçilmemişse bile, formdan gelen PT bilgisini mevcut üyeliğe işle
+            if ($packageId) {
+                // DÜZELTME: assigned_pt_id alanını UPDATE sorgusuna ekledik!
+                $updateMemSql = "UPDATE memberships SET package_id = ?, assigned_pt_id = ? WHERE user_id = ? AND status = 'active'";
+                $updateMem = $pdo->prepare($updateMemSql);
+                $updateMem->execute([$packageId, $ptId, $id]);
+            } else {
+                // Paket değişmese bile PT değişmiş olabilir
+                $updateMemSql = "UPDATE memberships SET assigned_pt_id = ? WHERE user_id = ? AND status = 'active'";
+                $updateMem = $pdo->prepare($updateMemSql);
+                $updateMem->execute([$ptId, $id]);
+            }
+
         } else {
-            // EKLEME
+            // --- YENİ KAYIT (INSERT) ---
             $sql = "INSERT INTO users (name, surname, email, phone, password, role, status) VALUES (?, ?, ?, ?, ?, 'member', 1)";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$name, $surname, $email, $phone, $password]);
             $userId = $pdo->lastInsertId();
 
-            // PAKET BİLGİSİNİ VE FİYATINI ÇEK
             $pkgStmt = $pdo->prepare("SELECT duration_days, session_count, price FROM packages WHERE id = ?");
             $pkgStmt->execute([$packageId]);
             $pkg = $pkgStmt->fetch(PDO::FETCH_ASSOC);
@@ -186,9 +210,18 @@ function handlePost($pdo) {
             if ($pkg) {
                 $endDate = date('Y-m-d', strtotime($startDate . " + " . $pkg['duration_days'] . " days"));
                 
-                // purchase_price EKLENDİ: O anki paket fiyatını kaydediyoruz
-                $memSql = "INSERT INTO memberships (user_id, package_id, start_date, end_date, total_sessions, remaining_sessions, status, purchase_price) VALUES (?, ?, ?, ?, ?, ?, 'active', ?)";
-                $pdo->prepare($memSql)->execute([$userId, $packageId, $startDate, $endDate, $pkg['session_count'], $pkg['session_count'], $pkg['price']]);
+                // YENİ KAYITTA ZATEN EKLİYDİ AMA KONTROL ETMEKTE FAYDA VAR
+                $memSql = "INSERT INTO memberships (user_id, package_id, start_date, end_date, total_sessions, remaining_sessions, status, purchase_price, assigned_pt_id) VALUES (?, ?, ?, ?, ?, ?, 'active', ?, ?)";
+                $pdo->prepare($memSql)->execute([
+                    $userId, 
+                    $packageId, 
+                    $startDate, 
+                    $endDate, 
+                    $pkg['session_count'], 
+                    $pkg['session_count'], 
+                    $pkg['price'],
+                    $ptId // PT ID'si burada
+                ]);
             }
         }
 
@@ -196,7 +229,9 @@ function handlePost($pdo) {
         echo json_encode(["success" => true]);
 
     } catch (PDOException $e) {
-        $pdo->rollBack();
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
         echo json_encode(["error" => "Veritabanı hatası: " . $e->getMessage()]);
     }
 }

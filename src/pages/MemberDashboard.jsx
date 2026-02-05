@@ -73,7 +73,7 @@ const MemberDashboard = () => {
 
             <div className="w-full max-w-7xl">
               <div className="flex items-center gap-4 mb-6">
-                  <div className="w-1 h-6 md:h-8 bg-[#009fe2] rounded-full"></div>
+                  <div className="w-1 h-6 md:h-8 bg-[#7c3aed] rounded-full"></div>
                   <h2 className="text-2xl md:text-3xl font-bold text-white">Takvim & Randevu</h2>
               </div>
               <MemberAppointmentCalendar user={user} />

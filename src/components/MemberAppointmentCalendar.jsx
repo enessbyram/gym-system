@@ -140,8 +140,8 @@ const MemberAppointmentCalendar = ({ user }) => {
         <div className="flex justify-between items-center mb-6 md:mb-8">
           <h2 className="text-xl md:text-2xl font-bold text-white">{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}</h2>
           <div className="flex gap-2">
-             <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))} className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#2e2e2e] text-white hover:bg-[#009fe2] border border-[#383737] flex items-center justify-center cursor-pointer text-sm md:text-base"><FontAwesomeIcon icon={faChevronLeft} /></button>
-             <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))} className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#2e2e2e] text-white hover:bg-[#009fe2] border border-[#383737] flex items-center justify-center cursor-pointer text-sm md:text-base"><FontAwesomeIcon icon={faChevronRight} /></button>
+             <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))} className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#2e2e2e] text-white hover:bg-[#7c3aed] border border-[#383737] flex items-center justify-center cursor-pointer text-sm md:text-base"><FontAwesomeIcon icon={faChevronLeft} /></button>
+             <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))} className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#2e2e2e] text-white hover:bg-[#7c3aed] border border-[#383737] flex items-center justify-center cursor-pointer text-sm md:text-base"><FontAwesomeIcon icon={faChevronRight} /></button>
           </div>
         </div>
 
@@ -166,14 +166,14 @@ const MemberAppointmentCalendar = ({ user }) => {
                 onClick={() => handleDateClick(dayNumber)}
                 className={`
                   relative min-h-16 md:min-h-25 rounded-xl border p-1 md:p-2 flex flex-col justify-between transition-all group
-                  ${isSelected ? 'border-[#009fe2] bg-[#242424]' : 'border-[#2e2e2e] bg-[#161515]'}
+                  ${isSelected ? 'border-[#7c3aed] bg-[#242424]' : 'border-[#2e2e2e] bg-[#161515]'}
                   ${isPast ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer hover:border-[#5b5b5b]'} 
                 `}
               >
-                <span className={`text-sm md:text-lg font-bold text-center md:text-left ${isSelected ? 'text-[#009fe2]' : 'text-[#5b5b5b]'}`}>{dayNumber}</span>
+                <span className={`text-sm md:text-lg font-bold text-center md:text-left ${isSelected ? 'text-[#7c3aed]' : 'text-[#5b5b5b]'}`}>{dayNumber}</span>
                 <div className="flex flex-col gap-1">
                   {dayApps.map((app, i) => (
-                    <div key={i} className={`text-[8px] md:text-[10px] px-1 md:px-2 py-0.5 rounded text-white text-center shadow-sm font-semibold truncate ${app.type === 'pt' ? 'bg-[#22c55e]' : 'bg-[#009fe2]'}`}>
+                    <div key={i} className={`text-[8px] md:text-[10px] px-1 md:px-2 py-0.5 rounded text-white text-center shadow-sm font-semibold truncate ${app.type === 'pt' ? 'bg-[#22c55e]' : 'bg-[#7c3aed]'}`}>
                       {app.time.substring(0, 5)} {app.type === 'pt' ? 'PT' : 'Salon'}
                     </div>
                   ))}
@@ -207,8 +207,8 @@ const MemberAppointmentCalendar = ({ user }) => {
                 <div className="flex flex-col gap-3">
                     <label className="text-sm text-[#5b5b5b] font-medium">Randevu Tipi</label>
                     {membershipInfo?.package_type === 'gym' && (
-                        <button onClick={() => setSelectedType('salon')} className={`flex items-center gap-4 p-4 rounded-xl border transition-all ${selectedType === 'salon' ? 'border-[#009fe2] bg-[#009fe2]/10' : 'border-[#383737] hover:border-[#009fe2]'}`}>
-                            <div className="w-10 h-10 rounded-full flex items-center justify-center bg-[#009fe2] text-white"><FontAwesomeIcon icon={faDumbbell} /></div>
+                        <button onClick={() => setSelectedType('salon')} className={`flex items-center gap-4 p-4 rounded-xl border transition-all ${selectedType === 'salon' ? 'border-[#7c3aed] bg-[#7c3aed]/10' : 'border-[#383737] hover:border-[#7c3aed]'}`}>
+                            <div className="w-10 h-10 rounded-full flex items-center justify-center bg-[#7c3aed] text-white"><FontAwesomeIcon icon={faDumbbell} /></div>
                             <span className="text-white font-medium">Salon Kullanımı</span>
                         </button>
                     )}
@@ -231,14 +231,14 @@ const MemberAppointmentCalendar = ({ user }) => {
                                 const isFull = count >= limit;
 
                                 return (
-                                    <button key={time} disabled={isFull} onClick={() => setSelectedTime(time)} className={`py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${isFull ? 'bg-[#2e1a1a] text-[#5c3a3a] cursor-not-allowed line-through' : selectedTime === time ? (selectedType === 'salon' ? 'bg-[#009fe2] text-white' : 'bg-[#22c55e] text-white') : 'bg-[#262626] text-[#b0b0b0] hover:bg-[#333]'}`}>{time}</button>
+                                    <button key={time} disabled={isFull} onClick={() => setSelectedTime(time)} className={`py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${isFull ? 'bg-[#2e1a1a] text-[#5c3a3a] cursor-not-allowed line-through' : selectedTime === time ? (selectedType === 'salon' ? 'bg-[#7c3aed] text-white' : 'bg-[#22c55e] text-white') : 'bg-[#262626] text-[#b0b0b0] hover:bg-[#333]'}`}>{time}</button>
                                 )
                             })}
                         </div>
                     </div>
                 )}
                 {selectedType && selectedTime && (
-                    <button onClick={handleCreateAppointment} className={`w-full py-4 rounded-xl cursor-pointer text-white font-bold text-lg shadow-lg hover:brightness-110 transition-all flex items-center justify-center gap-2 mt-4 ${selectedType === 'salon' ? 'bg-[#009fe2]' : 'bg-[#22c55e]'}`}>
+                    <button onClick={handleCreateAppointment} className={`w-full py-4 rounded-xl cursor-pointer text-white font-bold text-lg shadow-lg hover:brightness-110 transition-all flex items-center justify-center gap-2 mt-4 ${selectedType === 'salon' ? 'bg-[#7c3aed]' : 'bg-[#22c55e]'}`}>
                         <FontAwesomeIcon icon={faCheckCircle} /> Randevu Oluştur
                     </button>
                 )}
